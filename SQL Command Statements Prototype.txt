@@ -10,15 +10,13 @@ WHERE userName = $userName AND password = '$salt1' . '$password' . '$salt2';
 
 Get history from the database (to be displayed to the user) * TEST THIS *
 
-SELECT I.title, I.ISBN, I.price, uH.datePurch, uH.dueDate, uH.orderNum
-FROM nb_UsersTable U 
+SELECT I.title, I.ISBN, I.price, uH.datePurch, uH.dueDate, uH.orderNum FROM nb_UsersTable U 
 JOIN nb_History H
-ON H.userID = $userID
-RIGHT JOIN nb_userHistory uH
+ON H.userID = U.userID
+JOIN nb_userHistory uH
 ON H.orderNum = uH.orderNum
-RIGHT JOIN nb_Inventory I
-WHERE uH.bookID = I.bookID 	
-ORDER BY uH.datePurch ;
+JOIN nb_Inventory I
+ON uH.bookID = I.bookID;
 
 Get the rent price
 
@@ -26,14 +24,12 @@ SELECT * FROM nb_rentPrice
 
 Get data from the cart * TEST THIS ESPECIALLY *
 
-SELECT I.title, I.ISBN, I.price, uC.isRent
-JOIN nb_Carts C
-ON C.userID = $userID
-RIGHT JOIN nb_userCarts uC
+SELECT I.title, I.ISBN, I.price, uC.isRent FROM nb_Carts C
+JOIN nb_userCarts uC
 ON uC.cartID = C.cartID
-RIGHT JOIN nb_Inventory I
-WHERE uC.bookID = I.bookID
-ORDER BY I.title ;
+JOIN nb_Inventory I
+ON uC.bookID = I.bookID
+WHERE C.userID = 1;
 
 Add books to the inventory
 
@@ -60,8 +56,8 @@ VALUES ($cartID, $bookID, $isRent) ;
 
 Add history items
 
-INSERT INTO nb_userHistory (bookID, datePurch, dueDate)
-VALUES ($bookID, $datePurch, $dueDate) ;
+INSERT INTO nb_userHistory (orderNum, bookID, datePurch, dueDate)
+VALUES ($orderNum, $bookID, $datePurch, $dueDate) ;
 
 Add the order to the user's history
 
