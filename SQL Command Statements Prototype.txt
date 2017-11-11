@@ -24,14 +24,14 @@ Get the rent price
 
 SELECT * FROM nb_rentPrice
 
-Get data from the cart
+Get data from the cart * TEST THIS ESPECIALLY *
 
 SELECT I.title, I.ISBN, I.price, uC.isRent
 JOIN nb_Carts C
 ON C.userID = $userID
-JOIN nb_userCarts uC
+RIGHT JOIN nb_userCarts uC
 ON uC.cartID = C.cartID
-JOIN nb_Inventory I
+RIGHT JOIN nb_Inventory I
 WHERE uC.bookID = I.bookID
 ORDER BY I.title ;
 
