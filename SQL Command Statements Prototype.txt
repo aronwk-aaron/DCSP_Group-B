@@ -37,12 +37,12 @@ ORDER BY I.title ;
 
 Add books to the inventory
 
-INSERT INTO nb_Inventory
+INSERT INTO nb_Inventory (isbn, title, author, publisher, genre, price, quantity, inStock) ;
 VALUES($ISBN, $title, $author, $publisher, $genre, $price, $quantity, $quantity) ;
 
 Add a user to the user table
 
-INSERT INTO nb_UsersTable
+INSERT INTO nb_UsersTable (userName, firstName, lastName, password, address, city, zip, isAdmin, loggedIn)
 VALUES ($userName, $firstName, $lastName, $salt1 . $password . $salt2, $address, $city, $zip, false, false) ;
 
 Add a user's cart to the cart table
@@ -50,17 +50,17 @@ Add a user's cart to the cart table
 SELECT userID FROM nb_UsersTable
 WHERE userName = $userName ;
 
-INSERT INTO nb_Carts
+INSERT INTO nb_Carts (userID)
 VALUES ($userID) ;
 
 Add items to a user's cart
 
-INSERT INTO nb_userCarts
+INSERT INTO nb_userCarts (cartID, bookID, isRent)
 VALUES ($cartID, $bookID, $isRent) ;
 
 Add history items
 
-INSERT INTO nb_userHistory
+INSERT INTO nb_userHistory (bookID, datePurch, dueDate)
 VALUES ($bookID, $datePurch, $dueDate) ;
 
 Update a user's address
