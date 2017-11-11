@@ -32,9 +32,6 @@ inStock BOOL,
 PRIMARY KEY (bookID)
 );
 
-INSERT INTO nb_Inventory(isbn, title, author, publisher, genre, price, quantity, inStock)
- VALUES('1234567891011', 'Origin: A Novel', 'Dan Brown', '
-
 CREATE TABLE nb_rentPrice(
 rentPrice INT NOT NULL,
 PRIMARY KEY (rentPrice)
@@ -50,7 +47,7 @@ FOREIGN KEY (userID) REFERENCES nb_UsersTable(userID) ON DELETE CASCADE
 CREATE TABLE nb_userCarts(
 cartID INT NOT NULL,
 bookID INT NOT NULL,
-isRent,
+isRent BOOL,
 PRIMARY KEY (cartID, bookID),
 FOREIGN KEY (cartID) REFERENCES nb_Carts(cartID) ON DELETE CASCADE,
 FOREIGN KEY (bookID) REFERENCES nb_Inventory(bookID)
