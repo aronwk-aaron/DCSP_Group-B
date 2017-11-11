@@ -1,0 +1,75 @@
+CREATE TABLE nb_UsersTable (
+userID INT NOT NULL AUTO_INCREMENT,
+userName VARCHAR(30),
+firstName VARCHAR(25),
+lastName VARCHAR(25),
+password VARCHAR(25),
+address VARCHAR(50),
+city VARCHAR(50),
+state VARCHAR(50),
+isAdmin BOOL,
+loggedIn BOOL,
+PRIMARY KEY (userID)
+);
+
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
+ VALUES('test1', 'first', 'last', 'password', '123 test street', 'Testville', 'New Test', '0', '0');
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
+ VALUES('test2', 'firsty', 'lasty', 'password', '321 test road', 'Testoppolis', 'Testa', '0', '0');
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
+ VALUES('Admin', 'Admin', 'Admin', 'password', '111 Admin', 'Adminville', 'New Admin', '1', '0');
+ 
+CREATE TABLE nb_Inventory (
+bookID INT NOT NULL AUTO_INCREMENT,
+isbn CHAR(13),
+title VARCHAR(128),
+author VARCHAR(128),
+publisher VARCHAR(128),
+genre VARCHAR(128),
+price FLOAT,
+quantity INT,
+inStock BOOL,
+PRIMARY KEY (bookID)
+);
+
+INSERT INTO nb_Inventory(isbn, title, author, publisher, genre, price, quantity, inStock)
+ VALUES('1234567891011', 'Origin: A Novel', 'Dan Brown', '
+
+CREATE TABLE nb_rentPrice(
+rentPrice INT NOT NULL,
+PRIMARY KEY (rentPrice)
+);
+
+CREATE TABLE nb_Carts(
+cartID INT NOT NULL AUTO_INCREMENT,
+userID INT NOT NULL,
+PRIMARY KEY (cartID, userID),
+FOREIGN KEY (userID) REFERENCES nb_UsersTable(userID) ON DELETE CASCADE
+);
+
+CREATE TABLE nb_userCarts(
+cartID INT NOT NULL,
+bookID INT NOT NULL,
+isRent,
+PRIMARY KEY (cartID, bookID),
+FOREIGN KEY (cartID) REFERENCES nb_Carts(cartID) ON DELETE CASCADE,
+FOREIGN KEY (bookID) REFERENCES nb_Inventory(bookID)
+);
+
+CREATE TABLE nb_History(
+orderNum INT NOT NULL AUTO_INCREMENT,
+userID INT NOT NULL,
+PRIMARY KEY (orderNum, userID),
+FOREIGN KEY (orderNum) REFERENCES nb_userCarts(orderNum),
+FOREIGN KEY (userID) REFERENCES nb_UsersTable(userID) ON DELETE CASCADE
+);
+
+CREATE TABLE nb_userHistory(
+orderNum INT NOT NULL,
+bookID INT NOT NULL,
+datePurch DATE,
+dueDate DATE,
+PRIMARY KEY (orderNum, bookID),
+FOREIGN KEY (orderNum) REFERENCES nb_History(orderNum) ON DELETE CASCADE,
+FOREIGN KEY (bookID) REFERENCES nb_Inventory(bookID)
+);
