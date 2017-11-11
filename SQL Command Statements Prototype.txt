@@ -21,23 +21,19 @@ SELECT * FROM nb_rentPrice
 
 Get data from the cart * TEST THIS ESPECIALLY *
 
-SELECT I.title, I.ISBN, I.price, uC.isRent
-JOIN nb_Carts C
-ON C.userID = $userID
-RIGHT JOIN nb_userCarts uC
-ON uC.cartID = C.cartID
-RIGHT JOIN nb_Inventory I
-WHERE uC.bookID = I.bookID
-ORDER BY I.title ;
+SELECT I.title, I.ISBN, I.price, uC.isRent FROM nb_Carts C, nb_userCarts uC, nb_Inventory I
+WHERE C.userID = $userID
+AND uC.cartID = C.cartID
+AND uC.bookID = I.bookID
 
 Add books to the inventory
 
-INSERT INTO nb_Inventory
+INSERT INTO nb_Inventory (isbn, title, author, publisher, genre, price, quantity, inStock) ;
 VALUES($ISBN, $title, $author, $publisher, $genre, $price, $quantity, $quantity) ;
 
 Add a user to the user table
 
-INSERT INTO nb_UsersTable
+INSERT INTO nb_UsersTable (userName, firstName, lastName, password, address, city, zip, isAdmin, loggedIn)
 VALUES ($userName, $firstName, $lastName, $salt1 . $password . $salt2, $address, $city, $zip, false, false) ;
 
 Add a user's cart to the cart table
@@ -45,18 +41,23 @@ Add a user's cart to the cart table
 SELECT userID FROM nb_UsersTable
 WHERE userName = $userName ;
 
-INSERT INTO nb_Carts
+INSERT INTO nb_Carts (userID)
 VALUES ($userID) ;
 
 Add items to a user's cart
 
-INSERT INTO nb_userCarts
+INSERT INTO nb_userCarts (cartID, bookID, isRent)
 VALUES ($cartID, $bookID, $isRent) ;
 
 Add history items
 
-INSERT INTO nb_userHistory
-VALUES ($bookID, $datePurch, $dueDate) ;
+INSERT INTO nb_userHistory (orderNum, bookID, datePurch, dueDate)
+VALUES ($orderNum, $bookID, $datePurch, $dueDate) ;
+
+Add the order to the user's history
+
+INSERT INTO nb_History (userID)
+VALUES ($userID) ;
 
 Update a user's address
 
