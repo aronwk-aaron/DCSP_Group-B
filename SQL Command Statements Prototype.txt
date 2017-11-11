@@ -8,15 +8,15 @@ Get user details from the database for logging in, get admin details
 SELECT userName, password, isAdmin, userID FROM nb_UsersTable
 WHERE userName = $userName AND password = '$salt1' . '$password' . '$salt2';
 
-Get history from the database (to be displayed to the user)
+Get history from the database (to be displayed to the user) * TEST THIS *
 
 SELECT I.title, I.ISBN, I.price, uH.datePurch, uH.dueDate, uH.orderNum
 FROM nb_UsersTable U 
 JOIN nb_History H
 ON H.userID = $userID
-JOIN nb_userHistory uH
+RIGHT JOIN nb_userHistory uH
 ON H.orderNum = uH.orderNum
-JOIN nb_Inventory I
+RIGHT JOIN nb_Inventory I
 WHERE uH.bookID = I.bookID
 ORDER BY uH.datePurch ;
 
