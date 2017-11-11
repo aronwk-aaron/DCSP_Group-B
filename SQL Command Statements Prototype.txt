@@ -17,7 +17,7 @@ ON H.userID = $userID
 RIGHT JOIN nb_userHistory uH
 ON H.orderNum = uH.orderNum
 RIGHT JOIN nb_Inventory I
-WHERE uH.bookID = I.bookID
+WHERE uH.bookID = I.bookID 	
 ORDER BY uH.datePurch ;
 
 Get the rent price
@@ -62,6 +62,11 @@ Add history items
 
 INSERT INTO nb_userHistory (bookID, datePurch, dueDate)
 VALUES ($bookID, $datePurch, $dueDate) ;
+
+Add the order to the user's history
+
+INSERT INTO nb_History (userID)
+VALUES ($userID) ;
 
 Update a user's address
 
