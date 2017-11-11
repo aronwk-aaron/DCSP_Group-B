@@ -1,33 +1,33 @@
 Get books from the database
 
-SELECT ISBN, title, author, publisher, genre, price, quantity, inStock FROM nb_Inventory WHERE $entry_type = $entry_text;
+SELECT ISBN, title, author, publisher, genre, price, quantity, inStock FROM nb_Inventory WHERE $entry_type = $entry_text ;
 
 Get user details from the database for logging in, get admin details
 
 SELECT isAdmin, userID FROM nb_UsersTable
-WHERE userName = $userName AND password = '$salt1' . '$password' . '$salt2';
+WHERE userName = $userName AND password = '$salt1' . '$password' . '$salt2' ;
 
 Get history from the database (to be displayed to the user)
 
 SELECT I.title, I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate FROM nb_userHistory uH, nb_History H, nb_Inventory I
 WHERE H.userID = $userID
 AND uH.orderNum = H.orderNum
-AND uH.bookID = I.bookID
+AND uH.bookID = I.bookID ;
 
 Get the rent price
 
-SELECT * FROM nb_rentPrice
+SELECT * FROM nb_rentPrice ;
 
 Get data from the cart
 
 SELECT I.title, I.ISBN, I.price, uC.isRent FROM nb_Carts C, nb_userCarts uC, nb_Inventory I
 WHERE C.userID = $userID
 AND uC.cartID = C.cartID
-AND uC.bookID = I.bookID
+AND uC.bookID = I.bookID ;
 
 Add books to the inventory
 
-INSERT INTO nb_Inventory (isbn, title, author, publisher, genre, price, quantity, inStock) ;
+INSERT INTO nb_Inventory (isbn, title, author, publisher, genre, price, quantity, inStock)
 VALUES($ISBN, $title, $author, $publisher, $genre, $price, $quantity, $quantity) ;
 
 Add a user to the user table
@@ -45,26 +45,37 @@ INSERT INTO nb_Carts (userID)
 VALUES ($userID) ;
 }
 
+Get a user's cartID
+
+SELECT cartID FROM nb_Carts
+WHERE userID = $userID ;
+
 Add items to a user's cart
 
 INSERT INTO nb_userCarts (cartID, bookID, isRent)
 VALUES ($cartID, $bookID, $isRent) ;
 
+Remove items from a user's carts
+
+DELETE FROM nb_userCarts
+WHERE cartID = $cartID
+AND bookID = $bookID ;
+
 (After purchase) Add the order to the user's history, and then update the history table
 
 {
 
-	* Add the order to the user's history
+* Add the order to the user's history
 
 INSERT INTO nb_History (userID)
 VALUES ($userID) ;
 
-	* Retrieve the order number
+* Retrieve the order number
 
 SELECT MAX(orderNum) FROM nb_History
 WHERE userID = $userID;
 
-	* Add history items
+* Add history items
 
 INSERT INTO nb_userHistory (orderNum, bookID, datePurch, dueDate)
 VALUES ($orderNum, $bookID, $datePurch, $dueDate) ;
@@ -81,13 +92,13 @@ Update a book's quantity
 
 UPDATE nb_Inventory
 SET quantity = $quantity
-WHERE bookID = $bookID;
+WHERE bookID = $bookID ;
 
 Update the number of a book in stock
 
 UPDATE nb_Inventory
 SET inStock = $inStock
-WHERE bookID = $bookID;
+WHERE bookID = $bookID ;
 
 Delete a user
 
