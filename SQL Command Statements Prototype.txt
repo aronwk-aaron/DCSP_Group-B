@@ -10,15 +10,10 @@ WHERE userName = $userName AND password = '$salt1' . '$password' . '$salt2';
 
 Get history from the database (to be displayed to the user) * TEST THIS *
 
-SELECT I.title, I.ISBN, I.price, uH.datePurch, uH.dueDate, uH.orderNum
-FROM nb_UsersTable U 
-JOIN nb_History H
-ON H.userID = $userID
-RIGHT JOIN nb_userHistory uH
-ON H.orderNum = uH.orderNum
-RIGHT JOIN nb_Inventory I
-WHERE uH.bookID = I.bookID
-ORDER BY uH.datePurch ;
+SELECT I.title, I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate FROM nb_userHistory uH, nb_History H, nb_Inventory I
+WHERE H.userID = $userID
+AND uH.orderNum = H.orderNum
+AND uH.bookID = I.bookID
 
 Get the rent price
 
