@@ -73,7 +73,7 @@ FOREIGN KEY (userID) REFERENCES nb_UsersTable(userID) ON DELETE CASCADE
 CREATE TABLE nb_userCarts(
 cartID INT NOT NULL,
 bookID INT NOT NULL,
-isRent,
+isRent BOOL,
 PRIMARY KEY (cartID, bookID),
 FOREIGN KEY (cartID) REFERENCES nb_Carts(cartID) ON DELETE CASCADE,
 FOREIGN KEY (bookID) REFERENCES nb_Inventory(bookID)
