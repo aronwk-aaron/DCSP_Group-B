@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 ?>
 
 <div class="container">
@@ -8,5 +8,5 @@
 
 <?php
 	$pageTitle = 'Home';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>

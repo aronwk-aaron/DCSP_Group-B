@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 	// Were a username and password provided? If so check them against
 	// the database.
 	$is_user = false;
@@ -120,5 +120,5 @@
 
 <?php
 	$pageTitle = 'Login';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>

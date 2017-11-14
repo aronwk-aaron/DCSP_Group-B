@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 ?>
 
 <div class="container">
@@ -47,7 +47,7 @@
   function search($field, $term)
   {
     //database query section
-    require_once 'login.php';
+    require_once 'inc/login.php';
     $conn = new mysqli($hn, $un, $pw, $db);
     if ($conn->connect_error) 
       die($conn->connect_error);
@@ -93,5 +93,5 @@
 
 <?php
 	$pageTitle = 'Search';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>

@@ -5,7 +5,7 @@
         setcookie(session_name(),'',time()-999999);
     }
     session_destroy();
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
     // remove session and session cookie
 ?>
 
@@ -15,5 +15,5 @@
 
 <?php
 	$pageTitle = 'Logout';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>

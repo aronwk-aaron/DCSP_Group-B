@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 ?>
 
 <div class="container">
@@ -11,7 +11,7 @@ function browse()
     //performs query for all inventory
       
     //database query section
-    require_once 'login.php';
+    require_once 'inc/login.php';
     $conn = new mysqli($hn, $un, $pw, $db);
     if ($conn->connect_error) 
       die($conn->connect_error);
@@ -54,6 +54,6 @@ function browse()
 
 <?php
 	$pageTitle = 'Browse';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 
 ?>

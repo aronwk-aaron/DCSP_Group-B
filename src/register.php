@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 	$is_user = false;
 	$is_admin = false;
 		// Is someone already logged in?
@@ -32,61 +32,101 @@
 				<p class="card-text" style="color: red">
 		        	<?php echo $err_msg; ?>
 		        </p>
-		          <div class="form-group row">
-				    <label for="inputFirstname" class="col-sm-2 col-form-label">Firstname:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Firstname">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputLastname" class="col-sm-2 col-form-label">Lastname:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="lastname" id="inputLastname" placeholder="Lastname">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputUsername" class="col-sm-2 col-form-label">Username:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Username">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputPassword" class="col-sm-2 col-form-label">Password:</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputPasswordCheck" class="col-sm-2 col-form-label">Password Check:</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" name="passwordCheck" id="inputPasswordCheck" placeholder="Password">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputUsername" class="col-sm-2 col-form-label">Stree Address:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="streetAddress" id="inputStreetAddress" placeholder="Street Address">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputCity" class="col-sm-2 col-form-label">City:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="city" id="inputCity" placeholder="City">
-				    </div>
-				  </div>
-				  <div class="form-group row">
-				    <label for="inputState" class="col-sm-2 col-form-label">State:</label>
-				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="state" id="inputState" placeholder="State">
-				    </div>
-				  </div>
-				<input type="submit" value="Register">
-			</form>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="inputUsername">Username</label>
+							<input type="text" name="username" class="form-control" id="inputUsername" placeholder="Username">
+						</div>
+						<div class="form-group col-md-6">
+							<label for="inputPassword">Password</label>
+							<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputAddress">Address</label>
+						<input type="text" name="address" class="form-control" id="inputAddress" placeholder="1234 Main St">
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="inputCity">City</label>
+							<input type="text" name="city" class="form-control" id="inputCity">
+						</div>
+						<div class="form-group col-md-4">
+							<label for="inputState">State</label>
+							<select id="inputState" name="state" class="form-control">
+								<option selected>Choose a State</option>
+								<option value="AL">Alabama</option>
+								<option value="AK">Alaska</option>
+								<option value="AZ">Arizona</option>
+								<option value="AR">Arkansas</option>
+								<option value="CA">California</option>
+								<option value="CO">Colorado</option>
+								<option value="CT">Connecticut</option>
+								<option value="DE">Delaware</option>
+								<option value="DC">District Of Columbia</option>
+								<option value="FL">Florida</option>
+								<option value="GA">Georgia</option>
+								<option value="HI">Hawaii</option>
+								<option value="ID">Idaho</option>
+								<option value="IL">Illinois</option>
+								<option value="IN">Indiana</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+								<option value="LA">Louisiana</option>
+								<option value="ME">Maine</option>
+								<option value="MD">Maryland</option>
+								<option value="MA">Massachusetts</option>
+								<option value="MI">Michigan</option>
+								<option value="MN">Minnesota</option>
+								<option value="MS">Mississippi</option>
+								<option value="MO">Missouri</option>
+								<option value="MT">Montana</option>
+								<option value="NE">Nebraska</option>
+								<option value="NV">Nevada</option>
+								<option value="NH">New Hampshire</option>
+								<option value="NJ">New Jersey</option>
+								<option value="NM">New Mexico</option>
+								<option value="NY">New York</option>
+								<option value="NC">North Carolina</option>
+								<option value="ND">North Dakota</option>
+								<option value="OH">Ohio</option>
+								<option value="OK">Oklahoma</option>
+								<option value="OR">Oregon</option>
+								<option value="PA">Pennsylvania</option>
+								<option value="RI">Rhode Island</option>
+								<option value="SC">South Carolina</option>
+								<option value="SD">South Dakota</option>
+								<option value="TN">Tennessee</option>
+								<option value="TX">Texas</option>
+								<option value="UT">Utah</option>
+								<option value="VT">Vermont</option>
+								<option value="VA">Virginia</option>
+								<option value="WA">Washington</option>
+								<option value="WV">West Virginia</option>
+								<option value="WI">Wisconsin</option>
+								<option value="WY">Wyoming</option>
+							</select>
+						</div>
+						<div class="form-group col-md-2">
+							<label for="inputZip">Zip</label>
+							<input type="text" name="zip" class="form-control" id="inputZip">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="checkbox" name="confirm"> Confirm
+							</label>
+						</div>
+					</div>
+				<button type="submit" class="btn btn-dark">Register</button>
+				</form>
 		</div>
 	</div>
 </div>
 
 <?php
 	$pageTitle = 'Register';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>

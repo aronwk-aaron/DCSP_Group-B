@@ -1,5 +1,5 @@
 <?php
-	require_once("/templates/header.php");
+	require_once("templates/header.php");
 	$is_user = false;
 	$is_admin = false;
 	// Is someone already logged in? Making sure admin can't get on user page
@@ -26,5 +26,5 @@
 		exit();
 	}
 	$pageTitle = 'User';
-	require_once("/templates/footer.php");
+	require_once("templates/footer.php");
 ?>
