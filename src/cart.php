@@ -14,7 +14,7 @@
 ?>
 
 	<div class="container">
-		This is the User Page
+		This is the cart Page
 	</div>
 
 <?php
@@ -25,6 +25,6 @@
 		header("Location: index.php" );
 		exit();
 	}
-	$pageTitle = 'User';
+	$pageTitle = 'Cart';
 	require_once("/templates/footer.php");
 ?>

@@ -3,11 +3,10 @@
 ?>
 
 <div class="container">
-	This is the Browse Page
+	This is the Example Page
 </div>
 
 <?php
-	$pageTitle = 'Browse';
+	$pageTitle = 'Example';
 	require_once("/templates/footer.php");
-
 ?>
