@@ -193,6 +193,7 @@ CREATE TABLE `nb_userstable` (
   `lastName` varchar(25) DEFAULT NULL,
   `password` varchar(32) DEFAULT NULL,
   `address` varchar(50) DEFAULT NULL,
+  `zipCode` int(9) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `isAdmin` tinyint(1) DEFAULT NULL,
