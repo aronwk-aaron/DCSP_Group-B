@@ -52,7 +52,7 @@ INSERT INTO `lab5_users` (`forename`, `surname`, `type`, `username`, `password`)
 --
 
 CREATE TABLE `nb_carts` (
-  `cartID` int(11) NOT NULL,
+  `cartID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -71,7 +71,7 @@ INSERT INTO `nb_carts` (`cartID`, `userID`) VALUES
 --
 
 CREATE TABLE `nb_history` (
-  `orderNum` int(11) NOT NULL,
+  `orderNum` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -91,7 +91,7 @@ INSERT INTO `nb_history` (`orderNum`, `userID`) VALUES
 --
 
 CREATE TABLE `nb_inventory` (
-  `bookID` int(11) NOT NULL,
+  `bookID` int(11) NOT NULL AUTO_INCREMENT,
   `isbn` char(13) DEFAULT NULL,
   `title` varchar(128) DEFAULT NULL,
   `author` varchar(128) DEFAULT NULL,
@@ -187,7 +187,7 @@ INSERT INTO `nb_userhistory` (`orderNum`, `bookID`, `datePurch`, `dueDate`) VALU
 --
 
 CREATE TABLE `nb_userstable` (
-  `userID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL AUTO_INCREMENT,
   `userName` varchar(30) DEFAULT NULL,
   `firstName` varchar(25) DEFAULT NULL,
   `lastName` varchar(25) DEFAULT NULL,
