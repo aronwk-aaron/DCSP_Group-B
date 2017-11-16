@@ -17,10 +17,7 @@
 	}
 	$err_msg = "";
 
-  $username = $password = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $uid = "";
-  
-  $salt1 = "qm&h*";
-	$salt2 = "pg!@";
+  $username = $password = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $uid = $usernameDupe = $invalidInput = "";
   
   $states = [
   "AL" => "Alabama",
@@ -80,18 +77,24 @@
   
 	if($_POST)
   {
-    $username = $_POST['username'];
+    $username = sanitizeString($_POST['username']);
     $password = $_POST['password'];
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
+    $firstName = sanitizeString($_POST['firstName']);
+    $lastName = sanitizeString($_POST['lastName']);
+    $address = sanitizeString($_POST['address']);
+    $city = sanitizeString($_POST['city']);
     $state = $_POST['state'];
-    $zip = $_POST['zip'];
-    if(strlen($state) > 2)
+    $zip = sanitizeZip($_POST['zip']);
+    if(strlen($state) > 2 && $state != "Choose a State")
       {
         $state = $stateAbb[$state];
       }
+      
+    if($username != $_POST['username'] || $firstName != $_POST['firstName'] || $lastName != $_POST['lastName'] || $address != $_POST['address'] || $city != $_POST['city'] || $zip != $_POST['zip'])
+    {
+      $invalidInput = "True";
+      $error = "True"; 
+    }
     
     if($_POST && (!$username || !$password || !$address || !$city || $state =="Choose a State" || !$zip))
     {
@@ -103,24 +106,58 @@
       $incomplete = "";
     }
     
-    if(!$error && !$incomplete)
-    {
-      require_once 'inc/login.php';
-      $conn = new mysqli($hn, $un, $pw, $db);
-      if ($conn->connect_error) 
-        die($conn->connect_error);
+    $token = passHash($password);
+    
+    require_once 'inc/login.php';
+    $conn = new mysqli($hn, $un, $pw, $db);
+    if ($conn->connect_error) 
+      die($conn->connect_error);
       
+    $results = $conn->query("SELECT username FROM nb_userstable");
+    while($result = mysqli_fetch_assoc($results)) 
+    { 
+      if($username == $result['username'])
+      {
+        $error = "True";
+        $usernameDupe = "True";
+        break;
+      }
+    }
+    
+    if(!$error && !$incomplete)
+    {  
       $uid = 4;
       $sql = "INSERT INTO nb_UsersTable
-      VALUES ('" . $uid . "', '" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $salt1.$password.$salt2 . "', '" . $address . "', '" . $city . "', '" . $state . "', " . "'false', 'false')";
+      VALUES ('" . $uid . "', '" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', " . "'false', 'false')";
       
       if($conn->query($sql) === TRUE)
       {
         $successful = "True";
       }
-      
-      $conn->close();
     }
+    
+    $conn->close();
+  }
+  
+  
+  function sanitizeString($var)
+  { 
+    return preg_replace('/[^A-Za-z0-9\-]/', '', $var);
+  }
+  
+  
+  function sanitizeZip($var)
+  {
+    return preg_replace('/[^0-9]/', '', $var);
+  }
+  
+  
+  function passHash($password)
+  {
+    $salt1 = "qm&h*";
+    $salt2 = "pg!@";
+    $hashed = hash('ripemd128', "$salt1$password$salt2");
+    return $hashed;  
   }
 
 ?>
@@ -134,7 +171,10 @@
       <style>
             .error {color: #FF0000;}
       </style>
-      <?php if($incomplete) {echo('<p><span class="error">All form fields must be completed to register for NetBooks.</span></p>');}?>
+      <p><span class="error">
+        <?php if($incomplete) {echo('All form fields must be completed to register for NetBooks.<br>');}
+        if($invalidInput) {echo('Invalid special characters deleted. Check fields and resubmit.');}?>
+      </span></p>
 			<form method="post" action="register.php">
 				<p class="card-text" style="color: red">
 		        	<?php echo $err_msg; ?>
@@ -142,6 +182,8 @@
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label for="inputUsername">Username</label>
+              <span class="error"><?php if($usernameDupe) {echo('This username has already been claimed.');}?>
+              </span>
 							<input type="text" name="username" class="form-control" id="inputUsername" <?php if(!$_POST || ($_POST && !$username)) {echo('placeholder="Username"');}
               else {echo('value='); echo($username);}?>>
 						</div>
