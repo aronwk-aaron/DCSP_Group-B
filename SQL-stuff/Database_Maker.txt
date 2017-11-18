@@ -7,17 +7,18 @@ password VARCHAR(32),
 address VARCHAR(50),
 city VARCHAR(50),
 state VARCHAR(50),
+zip VARCHAR(5),
 isAdmin BOOL,
 loggedIn BOOL,
 PRIMARY KEY (userID)
 );
 
-INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
- VALUES('test1', 'first', 'last', 'password', '123 test street', 'Testville', 'New Test', '0', '0');
-INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
- VALUES('test2', 'firsty', 'lasty', 'password', '321 test road', 'Testoppolis', 'Testa', '0', '0');
-INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, isAdmin, loggedIn)
- VALUES('Admin', 'Admin', 'Admin', 'password', '111 Admin', 'Adminville', 'New Admin', '1', '0');
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
+ VALUES('test1', 'first', 'last', 'password', '123 test street', 'Testville', 'New Test', '12345', '0', '0');
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
+ VALUES('test2', 'firsty', 'lasty', 'password', '321 test road', 'Testoppolis', 'Testa', '54321', '0', '0');
+INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
+ VALUES('Admin', 'Admin', 'Admin', 'password', '111 Admin', 'Adminville', 'New Admin', '39759', '1', '0');
  
 CREATE TABLE nb_Inventory (
 bookID INT NOT NULL AUTO_INCREMENT,
