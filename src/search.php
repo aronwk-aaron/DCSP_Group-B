@@ -24,7 +24,7 @@
         <h1>Search Test</h1>
         
         <p>Select a category and enter your search.</p>
-        <form method = "POST" action="SearchTest.php">
+        <form method = "POST" action="search.php">
         <select name = "category">
         <form>
         <option <?php if($category == "Author"){echo("selected");}?>>Author</option>

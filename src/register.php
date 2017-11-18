@@ -17,7 +17,7 @@
 	}
 	$err_msg = "";
 
-  $username = $password = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $uid = $usernameDupe = $invalidInput = "";
+  $username = $password = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $usernameDupe = $invalidInput = $zipLenErr = "";
   
   $states = [
   "AL" => "Alabama",
@@ -81,11 +81,11 @@
     $password = $_POST['password'];
     $firstName = sanitizeString($_POST['firstName']);
     $lastName = sanitizeString($_POST['lastName']);
-    $address = sanitizeString($_POST['address']);
+    $address = sanitizeAddress($_POST['address']);
     $city = sanitizeString($_POST['city']);
     $state = $_POST['state'];
     $zip = sanitizeZip($_POST['zip']);
-    if(strlen($state) > 2 && $state != "Choose a State")
+    if(strlen($state) > 2 && $state != "Choose a State") 
       {
         $state = $stateAbb[$state];
       }
@@ -94,6 +94,12 @@
     {
       $invalidInput = "True";
       $error = "True"; 
+    }
+    
+    if(strlen($zip) > 5)
+    {
+      $zipLenErr = "True";
+      $error = "True";
     }
     
     if($_POST && (!$username || !$password || !$address || !$city || $state =="Choose a State" || !$zip))
@@ -124,11 +130,15 @@
       }
     }
     
+    if(!isset($_POST['confirm']))
+    {
+      $error = "True";
+    }
+    
     if(!$error && !$incomplete)
-    {  
-      $uid = 4;
-      $sql = "INSERT INTO nb_UsersTable
-      VALUES ('" . $uid . "', '" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', " . "'false', 'false')";
+    {
+      $sql = "INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
+      VALUES ('" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', '" . $zip . "', 'false', 'false')";
       
       if($conn->query($sql) === TRUE)
       {
@@ -143,6 +153,11 @@
   function sanitizeString($var)
   { 
     return preg_replace('/[^A-Za-z0-9\-]/', '', $var);
+  }
+  
+  function sanitizeAddress($var)
+  {
+    return preg_replace('/[^A-Za-z0-9\040]/', '', $var);
   }
   
   
@@ -208,7 +223,7 @@
 					<div class="form-group">
 						<label for="inputAddress">Address</label>
 						<input type="text" name="address" class="form-control" id="inputAddress" <?php if(!$_POST || ($_POST && !$address)) {echo('placeholder="1234 Main St"');}
-              else {echo('value='); echo($address);}?>>
+              else {echo('value='); echo('"' . $address) . '"';}?>>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-6">
@@ -278,6 +293,8 @@
 							<label for="inputZip">Zip</label>
 							<input type="text" name="zip" class="form-control" id="inputZip" <?php if(!$_POST || ($_POST && !$zip)) {echo('placeholder="12345"');}
               else {echo('value='); echo($zip);}?>>
+              <span class="error"><?php if($zipLenErr) {echo('Please use a five digit zip code.');}?>
+              </span>
 						</div>
 					</div>
 					<div class="form-group">
