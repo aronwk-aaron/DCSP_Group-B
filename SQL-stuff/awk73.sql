@@ -25,29 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lab5_users`
---
-
-CREATE TABLE `lab5_users` (
-  `forename` varchar(32) NOT NULL,
-  `surname` varchar(32) NOT NULL,
-  `type` varchar(10) NOT NULL,
-  `username` varchar(32) NOT NULL,
-  `password` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `lab5_users`
---
-
-INSERT INTO `lab5_users` (`forename`, `surname`, `type`, `username`, `password`) VALUES
-('Super', 'User', 'admin', 'admin', '6e8204c0862ec8abecb49762f0899554'),
-('Bill', 'Smith', 'user', 'bsmith', '32aa0c466818e1ccba25b8793db98c94'),
-('Pauline', 'Jones', 'user', 'pjones', '53eb1f29c1f8a132441a4fad1d6f667d');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `nb_carts`
 --
 
@@ -193,7 +170,7 @@ CREATE TABLE `nb_userstable` (
   `lastName` varchar(25) DEFAULT NULL,
   `password` varchar(32) DEFAULT NULL,
   `address` varchar(50) DEFAULT NULL,
-  `zipCode` int(9) DEFAULT NULL,
+  `zip` int(5) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `isAdmin` tinyint(1) DEFAULT NULL,
@@ -205,9 +182,9 @@ CREATE TABLE `nb_userstable` (
 --
 
 INSERT INTO `nb_userstable` (`userID`, `userName`, `firstName`, `lastName`, `password`, `address`, `city`, `state`, `isAdmin`, `loggedIn`) VALUES
-(1, 'pjones', 'first', 'last', '53eb1f29c1f8a132441a4fad1d6f667d', '123 test street', 'Testville', 'New Test', 0, 0),
-(2, 'bsmith', 'firsty', 'lasty', '32aa0c466818e1ccba25b8793db98c94', '321 test road', 'Testoppolis', 'Testa', 0, 0),
-(3, 'admin', 'Admin', 'Admin', '6e8204c0862ec8abecb49762f0899554', '111 Admin', 'Adminville', 'New Admin', 1, 0);
+(1, 'pjones', 'first', 'last', '53eb1f29c1f8a132441a4fad1d6f667d', '123 test street','38957', 'Testville', 'New Test', 0, 0),
+(2, 'bsmith', 'firsty', 'lasty', '32aa0c466818e1ccba25b8793db98c94', '321 test road','38957', 'Testoppolis', 'Testa', 0, 0),
+(3, 'admin', 'Admin', 'Admin', '6e8204c0862ec8abecb49762f0899554', '111 Admin','38957', 'Adminville', 'New Admin', 1, 0);
 
 --
 -- Indexes for dumped tables
