@@ -22,6 +22,9 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,9 +40,6 @@
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="browse.php">Browse</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="search.php">Search</a>
 		      </li>
 		      <?php
 		      	if($is_user){
