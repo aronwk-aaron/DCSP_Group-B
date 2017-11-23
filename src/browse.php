@@ -1,6 +1,9 @@
 <?php
 	require_once("templates/header.php");
 ?>
+<script type="text/javascript">
+  var page_title = "NetBooks - Browse";
+</script>
 
 <div class="container">
 </br>
@@ -17,7 +20,7 @@
       if ($conn->connect_error) 
         die($conn->connect_error);
 
-      $query  = "SELECT isbn, title, author, publisher, genre, price, quantity, inStock FROM nb_Inventory";
+      $query  = "SELECT * FROM nb_Inventory";
 
       $result = $conn->query($query);
       if (!$result) 
@@ -28,14 +31,13 @@
       <table id="table_id" class="display compact" >
       <thead>
             <tr>
-              <th>  Title             </th>
-              <th>  Author            </th>
-              <th>  Genre             </th> 
-              <th>  ISBN              </th>
-              <th>  Publisher         </th>
-              <th>  Price             </th>
-              <th>  Quantity          </th>
-              <th>  In Stock          </th>
+              <th>  Title     </th>
+              <th>  Author    </th>
+              <th>  Genre     </th> 
+              <th>  ISBN      </th>
+              <th>  Publisher </th>
+              <th>  Price     </th>
+              <!-- <th>  Quantity  </th> -->
               <?php 
               if($is_user){
               ?>
@@ -54,28 +56,25 @@
       {
         $result->data_seek($j);
         $row = $result->fetch_array(MYSQLI_ASSOC);
-        $inStock = "No";
-        if($row['inStock'] == 1)
-          $inStock = "Yes";
+        if($row['inStock']){
         
-        ?>
-        <tr>
-          <td>      <?php print($row['title']);      ?>      </td>
-          <td>      <?php print($row['author'] );    ?>      </td>
-          <td>      <?php print($row['genre']);      ?>      </td>
-          <td>      <?php print($row['isbn']);       ?>      </td>
-          <td>      <?php print($row['publisher']);  ?>      </td>
-          <td>     $<?php print($row['price']);      ?>.00   </td>
-          <td>      <?php print($row['quantity']);   ?>      </td>
-          <td>      <?php print($inStock)            ?>      </td>
-
-        <?php
-        if($is_user){
           ?>
-            <td>  
-              <button type="button" class="btn btn-success">Buy</button> <button type="button" class="btn btn-warning">Rent</button>
-            </td>
+          <tr>
+            <td>      <?php print($row['title']);      ?>      </td>
+            <td>      <?php print($row['author'] );    ?>      </td>
+            <td>      <?php print($row['genre']);      ?>      </td>
+            <td>      <?php print($row['isbn']);       ?>      </td>
+            <td>      <?php print($row['publisher']);  ?>      </td>
+            <td>     $<?php print($row['price']);      ?>.00   </td>
+            <!-- <td>      <?php print($row['quantity']);   ?>      </td> -->
           <?php
+          if($is_user){
+            ?>
+              <td>  
+                <button type="button" class="btn btn-success" name="buy[]" id="<?php $row['bookID']?>">Buy</button> <button type="button" class="btn btn-warning" name="rent[]" id="<?php $row['bookID']?>">Rent</button>
+              </td>
+            <?php
+          }
         }
       }
       
@@ -85,7 +84,5 @@
   </div>
 </div>
 <?php
-	$pageTitle = 'Browse';
 	require_once("templates/footer.php");
-
 ?>

@@ -1,16 +1,12 @@
 <?php
 	require_once("templates/header.php");
-	$is_user = false;
-	$is_admin = false;
-		// Is someone already logged in?
+  //kicking out the wrong peopl
 	if(isset($_SESSION['username'])){
-		if($_SESSION['isAdmin']){
-		  $is_admin = true;
+		if($is_admin){
 		  header("Location: admin_page.php" );
 		  exit();
 		}
 		else{
-		  $is_user = true;
 		  header("Location: user_page.php" );
 		  exit();
 		}
@@ -176,7 +172,9 @@
   }
 
 ?>
-
+<script type="text/javascript">
+  var page_title = "NetBooks - Register";
+</script>
 <div class="container">
 	<br>
 	<div class="card">
@@ -314,6 +312,5 @@
 </div>
 
 <?php
-	$pageTitle = 'Register';
 	require_once("templates/footer.php");
 ?>

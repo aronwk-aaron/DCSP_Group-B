@@ -14,13 +14,7 @@
 				    }]
     			});
 			} );
+			document.title = page_title;
 		</script>
 	</body>
 </html>
-<?php
-	$pageContents = ob_get_contents (); // Get all the page's HTML into a string
-	ob_end_clean (); // Wipe the buffer
-
-	// Replace <!--page--> with $pageTitle variable contents, and print the HTML
-	echo str_replace ('<!--page-->', $pageTitle, $pageContents);
-?>

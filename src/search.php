@@ -1,3 +1,5 @@
+<!-- This is defunct due to the search feature -->
+<!-- Don't work on this anymore, it's a waste of time. -->
 <?php
 	require_once("templates/header.php");
 ?>

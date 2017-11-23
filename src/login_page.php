@@ -1,19 +1,12 @@
 <?php
 	require_once("templates/header.php");
-	// Were a username and password provided? If so check them against
-	// the database.
-	$is_user = false;
-	$is_admin = false;
-
 	// Is someone already logged in?
 	if(isset($_SESSION['username'])){
-		if($_SESSION['isAdmin']){
-		  $is_admin = true;
+		if($is_admin){
 		  header("Location: admin_page.php" );
 		  exit();
 		}
 		else{
-		  $is_user = true;
 		  header("Location: user_page.php" );
 		  exit();
 		}
@@ -50,10 +43,15 @@
 
           //      If username / password were valid, set session variables
           //      and forward them to the correct page
-          $_SESSION['username'] = $un_temp;
-          $_SESSION['firstname'] = $row['firstName'];
-          $_SESSION['lastname']  = $row['lastName'];
-          $_SESSION['isAdmin'] = $row['isAdmin'];
+          $_SESSION['user_id']		= $row['UserID'];
+          $_SESSION['username'] 	= $un_temp;
+          $_SESSION['firstname'] 	= $row['firstName'];
+          $_SESSION['lastname']  	= $row['lastName'];
+          $_SESSION['address']		= $row['address'];
+          $_SESSION['city']			= $row['city'];
+          $_SESSION['state']		= $row['state'];
+          $_SESSION['zip']			= $row['zip'];
+          $_SESSION['isAdmin']		= $row['isAdmin'];
           $connection->close();
           if($_SESSION['isAdmin']){
             	$is_admin = true;
@@ -90,7 +88,9 @@
 		return $connection->real_escape_string($string);
 	}
 ?>
-
+<script type="text/javascript">
+	var page_title = "NetBooks - Login";
+</script>
 <div class="container">
 	<br>
 	<div class="card">
@@ -119,6 +119,5 @@
 </div>
 
 <?php
-	$pageTitle = 'Login';
 	require_once("templates/footer.php");
 ?>
