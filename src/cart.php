@@ -13,7 +13,14 @@
 			</script>
 
 			<div class="container">
-				This is the cart Page
+				<div class="card">
+				  <div class="card-body">
+				    <h4 class="card-title"> <?php print($_SESSION['firstname'])?>'s Cart</h4>
+				    <p class="card-text">
+				    	Do cart things here
+				    </p>
+				  </div>
+				</div>
 			</div>
 
 <?php

@@ -26,7 +26,7 @@
 		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 
 	</head>
-	<body>
+	<body class="bg-dark">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
