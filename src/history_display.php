@@ -18,13 +18,15 @@ if ($conn->connect_error)
 
 //$_SESSION['userID'];
 $userName = $_SESSION['username'];
-$userID = "SELECT userID FROM nb_urserstable WHERE userName = $userName";
+$userID = "SELECT userID FROM nb_userstable WHERE userName = '$userName'";
+$result = $conn->query($userID);
+$userID = $result->num_rows;
 //$_SESSION['userID'];
 
 if($is_user == true)
     $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate FROM nb_userHistory uH, nb_History H, nb_Inventory I WHERE H.userID = $userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
 else
-    $query  = "Select I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userHistory uH, nb_History H, nb_Inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
+    $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userHistory uH, nb_History H, nb_Inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
 
 $result = $conn->query($query);
       if (!$result)
@@ -94,6 +96,7 @@ $rows = $result->num_rows;
         </div>
     </div>
 </div>
+    <div><ul><li><a href="user_page.php">Back to Profile</a></li></ul></div>
     <?php
     $pageTitle = 'History';
     require_once("templates/footer.php");
