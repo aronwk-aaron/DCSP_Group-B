@@ -43,7 +43,7 @@
 
           //      If username / password were valid, set session variables
           //      and forward them to the correct page
-          $_SESSION['user_id']		= $row['UserID'];
+          $_SESSION['user_id']		= $row['userID'];
           $_SESSION['username'] 	= $un_temp;
           $_SESSION['firstname'] 	= $row['firstName'];
           $_SESSION['lastname']  	= $row['lastName'];

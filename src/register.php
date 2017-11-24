@@ -140,6 +140,19 @@
       {
         $successful = "True";
       }
+      
+      $sql1 = "SELECT userID FROM nb_UsersTable WHERE userName = '" .$username . "'";
+      
+      $results = $conn->query($sql1);
+      while($result = mysqli_fetch_assoc($results)) 
+      { 
+        $uid = $result['userID'];
+      }
+      
+      $sql2 = "INSERT INTO nb_carts(cartID, userID)
+      VALUES ('" . $uid . "', '" . $uid . "')";
+      
+      $conn->query($sql2);
     }
     
     $conn->close();
@@ -180,7 +193,9 @@
 	<div class="card">
 		<div class="card-body">
 			<h3 class="card-title"> Register: </h3>
+      <span style="color:blue;font-weight:bold;text-align:center;">
       <?php if($successful) {echo('Account creation successful!');}?>
+      </span>
       <style>
             .error {color: #FF0000;}
       </style>
