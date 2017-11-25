@@ -61,6 +61,7 @@
                         <!-- class="nav nav-pills nav-stacked" for the ul-->
                         <ul>
                             <li><a href="history_display.php">History & Due Dates</a></li>
+                            <li><a href="cart.php">View Cart</a></li>
                             <li><a href="profile_change.php">Change Profile</a></li>
                         </ul><br>
                     </div>
@@ -70,7 +71,7 @@
                         <hr>
                         <h2><?php print(($_SESSION['firstname']) . ' ' . ($_SESSION['lastname'])); ?></h2>
                         <h5><?php print($row['address']);?></h5>
-                        <h5><?php print($row['city'] . ',' . $row['state']);?></h5><br>
+                        <h5><?php print($row['city'] . ', ' . $row['state']);?></h5><br>
                         <br><br>
                     </div>
                 </div>
