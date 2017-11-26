@@ -17,8 +17,8 @@
   
   $states = [
   "AL" => "Alabama",
-	"AK" => "Alaska",
-	"AZ" => "Arizona",
+  "AK" => "Alaska",
+  "AZ" => "Arizona",
   "AR" => "Arkansas",
   "CA" => "California",
   "CO" => "Colorado",
