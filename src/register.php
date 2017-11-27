@@ -92,7 +92,7 @@
       $error = "True"; 
     }
     
-    if(strlen($zip) > 5)
+    if(strlen($zip) != 5)
     {
       $zipLenErr = "True";
       $error = "True";
