@@ -13,7 +13,63 @@
 		}
 		else
     {
-      $incomplete = $invalidInput = $zipLenErr = $cardNum = $exp = $cvv = $success = '';
+      $incomplete = $invalidInput = $zipLenErr  = $zipLenErr2 = $cardLenErr = $expLenErr = $cvvLenErr = $cardNum = $exp = $cvv = $success = '';
+      
+      $states = [
+  "AL" => "Alabama",
+	"AK" => "Alaska",
+	"AZ" => "Arizona",
+  "AR" => "Arkansas",
+  "CA" => "California",
+  "CO" => "Colorado",
+  "CT" => "Connecticut",
+  "DE" => "Delaware",
+  "DC" => "District Of Columbia",
+  "FL" => "Florida",
+  "GA" => "Georgia",
+  "HI" => "Hawaii",
+  "ID" => "Idaho",
+  "IL" => "Illinois",
+  "IN" => "Indiana",
+  "IA" => "Iowa",
+  "KS" => "Kansas",
+  "KY" => "Kentucky",
+  "LA" => "Louisiana",
+  "ME" => "Maine",
+  "MD" => "Maryland",
+  "MA" => "Massachusetts",
+  "MI" => "Michigan",
+  "MN" => "Minnesota",
+  "MS" => "Mississippi",
+  "MO" => "Missouri",
+  "MT" => "Montana",
+  "NE" => "Nebraska",
+  "NV" => "Nevada",
+  "NH" => "New Hampshire",
+  "NJ" => "New Jersey",
+  "NM" => "New Mexico",
+  "NY" => "New York",
+  "NC" => "North Carolina",
+  "ND" => "North Dakota",
+  "OH" => "Ohio",
+  "OK" => "Oklahoma",
+  "OR" => "Oregon",
+  "PA" => "Pennsylvania",
+  "RI" => "Rhode Island",
+  "SC" => "South Carolina",
+  "SD" => "South Dakota",
+  "TN" => "Tennessee",
+  "TX" => "Texas",
+  "UT" => "Utah",
+  "VT" => "Vermont",
+  "VA" => "Virginia",
+  "WA" => "Washington",
+  "WV" => "West Virginia",
+  "WI" => "Wisconsin",
+  "WY" => "Wyoming",
+  ];
+  
+  $stateAbb = array_flip($states);
       
       $sql = $query  = "SELECT firstName, lastName, address, city, state, zip FROM nb_userstable WHERE userName = '" . $_SESSION['username'] . "'";
       require_once 'inc/login.php';
@@ -52,16 +108,62 @@
         $city2 = sanitizeString($_POST['city2']);
         $state2 = $_POST['state2'];
         $zip2 = sanitizeZip($_POST['zip2']);
-        if(strlen($state) > 2 && $state2 != "Choose a State") 
+        if(strlen($state2) > 2 && $state2 != "Choose a State") 
         {
-          $state = $stateAbb[$state];
+          $state2 = $stateAbb[$state2];
         }
         
         $cardNum = sanitizeZip($_POST['cardNum']);
         $exp = sanitizeZip($_POST['exp']);
         $cvv = sanitizeZip($_POST['cvv']);
         
-        if($success)
+        if($firstName != $_POST['firstName'] || $lastName != $_POST['lastName'] || $address != $_POST['address'] || $city != $_POST['city'] || $zip != $_POST['zip'] || $firstName2 != $_POST['firstName2'] || $lastName2 != $_POST['lastName2'] || $address2 != $_POST['address2'] || $city2 != $_POST['city2'] || $zip2 != $_POST['zip2'] || $cardNum != $_POST['cardNum'] || $exp != $_POST['exp'] || $cvv != $_POST['cvv'])
+        {
+          $invalidInput = "True";
+          $error = "True"; 
+        }
+    
+        if(strlen($zip) != 5)
+        {
+          $zipLenErr = "True";
+          $error = "True";
+        }
+        
+        if(strlen($zip2) != 5)
+        {
+          $zipLenErr2 = "True";
+          $error = "True";
+        }
+        
+        if(strlen($cardNum) != 16)
+        {
+          $cardLenErr = "True";
+        }
+        
+        if(strlen($exp) != 4)
+        {
+          $expLenErr = "True";
+        }
+        
+        if(strlen($cvv) != 3)
+        {
+          $cvvLenErr = "True";
+        }
+    
+        if($_POST && (!$firstName || !$lastName || !$address || !$city || $state =="Choose a State" || !$zip || !$firstName2 || !$lastName2 || !$address2 || !$city2 || $state2 =="Choose a State" || !$zip2 || !isset($_POST['confirm']) || !$cardNum || !$exp || !$cvv))
+        {
+          $incomplete = "1";
+        }
+    
+        else
+        {
+          $incomplete = "";
+        }
+        
+        if(!$incomplete && !$error)
+        {
+        
+        }
         
       }    
   ?>
@@ -267,7 +369,7 @@
 							<label for="inputZip">Zip</label>
 							<input type="text" name="zip2" class="form-control" id="inputZip" <?php if(!$_POST || ($_POST && !$zip2)) {echo('value="' . $zip2 . '"');}
               else {echo('value='); echo($zip2);}?>>
-              <span class="error"><?php if($zipLenErr) {echo('Please use a five digit zip code.');}?>
+              <span class="error"><?php if($zipLenErr2) {echo('Please use a five digit zip code.');}?>
               </span>
 						</div>
 					</div>
@@ -284,18 +386,24 @@
 							<label for="inputCardNumber">Card Number</label>
 							<input type="text" name="cardNum" class="form-control" id="cardNum" <?php if(!$_POST || ($_POST && !$cardNum)) {echo('placeholder="XXXX-XXXX-XXXX-XXXX"');}
               else {echo('value='); echo($cardNum);}?>>
+              <span class="error"><?php if($cardLenErr) {echo('Please enter a 16 digit card number.');}?>
+              </span>
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputExpiration">Expiration Date</label>
-							<input type="text" name="exp" class="form-control" id="inputLastName" <?php if(!$_POST || ($_POST && !$exp)) {echo('placeholder="MMYY"');}
+							<input type="text" name="exp" class="form-control" id="inputExpiration" <?php if(!$_POST || ($_POST && !$exp)) {echo('placeholder="MMYY"');}
               else {echo('value='); echo($exp);}?>>
+              <span class="error"><?php if($expLenErr) {echo('Please enter a four digit expiration date MMYY.');}?>
+              </span>
 						</div>
 					</div>
           <div class="form-row">
 					  <div class="form-group col-md-1">
-						  <label for="inputAddress">CVV</label>
+						  <label for="inputCvv">CVV</label>
 						  <input type="text" name="cvv" class="form-control" id="inputCvv" <?php if(!$_POST || ($_POST && !$cvv)) {echo('placeholder="XXX"');}
-              else {echo('value='); echo('"' . $address2) . '"';}?>>
+              else {echo('value='); echo($cvv);}?>>
+              <span class="error"><?php if($cvvLenErr) {echo('Please enter a three digit CVV code (found on the back of the card).');}?>
+              </span>
 					 </div>
           </div>
 					       
