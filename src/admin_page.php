@@ -48,8 +48,11 @@
 						  <li class="nav-item">
 						    <a class="nav-link" id="stock-tab" data-toggle="tab" href="#stock" role="tab" aria-controls="stock" aria-selected="false">In Stock</a>
 						  </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="add_book-tab" data-toggle="tab" href="#book" role="tab" aria-controls="book" aria-selected="false">Add Book</a>
+                            </li>
 						  <li class="nav-item">
-						    <a class="nav-link" id="users-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Users</a>
+						    <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="contact" aria-selected="false">Users</a>
 						  </li>
 						</ul>
 						<div class="tab-content" id="myTabContent">
@@ -108,7 +111,7 @@
                                   </div>
                               </div>
 						  </div>
-						  <div class="tab-pane fade" id="stock" role="tabpanel" aria-labelledby="Add Stock-tab">
+						  <div class="tab-pane fade" id="stock" role="tabpanel" aria-labelledby="stock-tab">
                               <div class="container">
                                   </br>
                                   <div class="card">
@@ -186,7 +189,9 @@
                                   </div>
                               </div>
                           </div>
-						  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="users-tab">
+                          <div class="tab-pane fade" id="book" role="tabpanel" aria-labelledby="add_book-tab">
+                          </div>
+						  <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
                               <div class="container">
                                   </br>
                                   <div class="card">
@@ -221,18 +226,20 @@
                                               //table display
                                               for ($j = 0 ; $j < $urows ; ++$j)
                                               {
-                                              $uresult->data_seek($j);
-                                              $urow = $uresult->fetch_array(MYSQLI_ASSOC);
-                                              ?>
-                                              <tr>
-                                                  <td>      <?php print($urow['userName']);   ?>     </td>
-                                                  <td>      <?php print($urow['userID']);     ?>     </td>
-                                                  <td>      <form action="admin_page.php#stock" method="post">
+                                                $uresult->data_seek($j);
+                                                $urow = $uresult->fetch_array(MYSQLI_ASSOC);
+                                                if (!$urow['isAdmin']){
+                                                    ?>
+                                                    <tr>
+                                                        <td>      <?php print($urow['userName']);   ?>     </td>
+                                                        <td>      <?php print($urow['userID']);     ?>     </td>
+                                                        <td>      <form action="admin_page.php#users" method="post">
                                                                 <button type="submit" class="btn btn-success" name="delete" value="<?php echo($urow['userID']);?>">Delete</button>
-                                                            </form>
-                                                  </td>
-                                              </tr>
-                                              <?php } ?>
+                                                                  </form>
+                                                        </td>
+                                                    </tr>
+                                              <?php }
+                                              } ?>
                                               </tbody>
                                           </table>
                                       </div>
