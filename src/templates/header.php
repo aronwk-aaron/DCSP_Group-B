@@ -59,6 +59,9 @@
 		  			?>
 			  			<li class="nav-item" >
 							<a class="nav-link" href="admin_page.php">Admin Page</a>
+                        <li class="nav-item" >
+                        <a class="nav-link" href="add_book.php">Add Book</a>
+                        </li>
 					    </li>
 					    <li class="nav-item" >
 							<a class="nav-link" href="logout.php">Logout</a>
