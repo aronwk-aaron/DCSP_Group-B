@@ -48,9 +48,6 @@
 						  <li class="nav-item">
 						    <a class="nav-link" id="stock-tab" data-toggle="tab" href="#stock" role="tab" aria-controls="stock" aria-selected="false">In Stock</a>
 						  </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="add_book-tab" data-toggle="tab" href="#book" role="tab" aria-controls="book" aria-selected="false">Add Book</a>
-                            </li>
 						  <li class="nav-item">
 						    <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="contact" aria-selected="false">Users</a>
 						  </li>
@@ -188,8 +185,6 @@
                                       </div>
                                   </div>
                               </div>
-                          </div>
-                          <div class="tab-pane fade" id="book" role="tabpanel" aria-labelledby="add_book-tab">
                           </div>
 						  <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
                               <div class="container">
