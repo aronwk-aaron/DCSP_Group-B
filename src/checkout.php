@@ -165,16 +165,19 @@
         if(strlen($cardNum) != 16)
         {
           $cardLenErr = "True";
+          $error = "True";
         }
         
         if(strlen($exp) != 4)
         {
           $expLenErr = "True";
+          $error = "True";
         }
         
         if(strlen($cvv) != 3)
         {
           $cvvLenErr = "True";
+          $error = "True";
         }
     
         if($_POST && (!$firstName || !$lastName || !$address || !$city || $state =="Choose a State" || !$zip || !$firstName2 || !$lastName2 || !$address2 || !$city2 || $state2 =="Choose a State" || !$zip2 || !isset($_POST['confirm']) || !$cardNum || !$exp || !$cvv))
@@ -475,10 +478,10 @@
 						  <label for="inputCvv">CVV</label>
 						  <input type="text" name="cvv" class="form-control" id="inputCvv" <?php if(!$_POST || ($_POST && !$cvv)) {echo('placeholder="XXX"');}
               else {echo('value='); echo($cvv);}?> required>
-              <span class="error"><?php if($cvvLenErr) {echo('Please enter a three digit CVV code (found on the back of the card).');}?>
-              </span>
 					 </div>
           </div>
+          <span class="error"><?php if($cvvLenErr == "True") {echo('Please enter a three digit CVV code (found on the back of the card).');}?>
+          </span>
 					       
           
 					<div class="form-group">
