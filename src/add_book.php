@@ -27,7 +27,7 @@ if($_POST)
         $error = "True";
     }
 
-    if(strlen($isbn) > 13)
+    if((strlen($isbn) == 13) or (strlen($isbn) == 10))
     {
         $isbnLenErr = "True";
         $error = "True";
@@ -73,7 +73,7 @@ if($_POST)
     if(!$error && !$incomplete)
     {
         $sql = "INSERT INTO nb_inventory(isbn, title, author, publisher, genre, price, quantity, inStock)
-      VALUES ('" . $isbn . "', '" . $title . "', '" . $author . "', '" . $publisher . "', '" . $genre . "', '" . $price . "', '" . $quantity . "', 'true')";
+      VALUES ('" . $isbn . "', '" . $title . "', '" . $author . "', '" . $publisher . "', '" . $genre . "', '" . $price . "', '" . $quantity . "', '1')";
 
         if(!$conn->query($sql))
         {

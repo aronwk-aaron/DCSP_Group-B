@@ -58,7 +58,7 @@
                                   </br>
                                   <div class="card">
                                       <div class="card-body">
-                                          <table id="table_id" class="display compact" >
+                                          <table id="table_id" class="display compact text-center " >
                                               <thead>
                                               <tr>
                                                   <th>  Order Number             </th>
@@ -149,7 +149,7 @@
                                           ?>
                                           <table id="table_id" class="display compact" >
                                               <thead>
-                                              <tr>
+                                              <tr class="text-center">
                                                   <th>  Title     </th>
                                                   <th>  ISBN      </th>
                                                   <th>  Price     </th>
@@ -166,15 +166,17 @@
                                                   $iresult->data_seek($j);
                                                   $irow = $iresult->fetch_array(MYSQLI_ASSOC);
                                                   ?>
-                                                  <tr>
+                                                  <tr class="text-center">
                                                   <td>      <?php print($irow['title']);      ?>      </td>
                                                   <td>      <?php print($irow['isbn']);       ?>      </td>
                                                   <td>     $<?php print($irow['price']);      ?>.00   </td>
                                                   <td>      <?php print($irow['quantity']);   ?>      </td>
                                                   <td>
                                                       <form action="admin_page.php#stock" method="post">
+                                                      	<span class="input-group-btn">
                                                           <input name="quantity" class="form-control input-number" value="1" min="1" max="10" type="text">
                                                           <button type="submit" class="btn btn-success" name="confirm" value="<?php echo($irow['bookID']);?>">Submit</button>
+                                                        </span>
                                                       </form>
                                                   </td>
                                                       <?php
