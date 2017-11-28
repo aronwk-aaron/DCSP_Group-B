@@ -13,7 +13,8 @@
     <p class="card-text">
     	NetBooks is an online marketplace for the latest and greatest books!<br>
     	You can buy or rent your favorite books at competitive prices!
-    	All you need to do to get started is create an account!
+    	All you need to do to get started is create an account!<br>
+      <p class="font-weight-bold">All rentals are $2</p>
 	</p>
     <a href="https://github.com/awk73/DCSP_Group-B" class="card-link">Source Code</a>
   </div>

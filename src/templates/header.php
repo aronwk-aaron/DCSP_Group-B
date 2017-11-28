@@ -28,10 +28,10 @@
 	</head>
 	<body class="bg-dark">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="index.php">NetBooks</a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
-		  <a class="navbar-brand" href="index.php">NetBooks</a>
 
 		  <div class="collapse navbar-collapse" id="navbarMain">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -41,41 +41,54 @@
 		      <li class="nav-item">
 		        <a class="nav-link" href="browse.php">Browse</a>
 		      </li>
+		     </ul>
 		      <?php
 		      	if($is_user){
 		      		?>
-						<li class="nav-item" >
-							<a class="nav-link" href="user_page.php">User Page</a>
-						</li>
-						<li class="nav-item" >
-							<a class="nav-link" href="cart.php">Cart</a>
-						</li>
+	      			<ul class="navbar-nav">
+		                <li class="nav-item dropdown">
+		                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                      Hello, <?php print($_SESSION['firstname']); ?>
+		                    </a>
+		                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="user_page.php">Your Profile</a>
+								<a class="dropdown-item" href="cart.php">Your Cart</a>
+		                    </div>
+		                </li>
 						<li class="nav-item" >
 							<a class="nav-link" href="logout.php">Logout</a>
 						</li>
+		            </ul>
 			    	<?php
 		  		}
 		  		if($is_admin){
 		  			?>
-			  			<li class="nav-item" >
-							<a class="nav-link" href="admin_page.php">Admin Page</a>
-                        <li class="nav-item" >
-                        <a class="nav-link" href="add_book.php">Add Book</a>
-                        </li>
-					    </li>
-					    <li class="nav-item" >
+		  			<ul class="navbar-nav">
+		                <li class="nav-item dropdown">
+		                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                      Hello, <?php print($_SESSION['firstname']); ?>
+		                    </a>
+		                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="admin_page.php">Admin Page</a>
+								<a class="dropdown-item" href="add_book.php">Add Book</a>
+		                    </div>
+		                </li>
+						<li class="nav-item" >
 							<a class="nav-link" href="logout.php">Logout</a>
-				      	</li>
+						</li>
+		            </ul>
 				    <?php
 		  		}
 		  		if((!($is_user))&&(!($is_admin))){
 		  			?>
+		  			<ul class="navbar-nav">
 						<li class="nav-item" >
 							<a class="nav-link" href="login_page.php">Login</a>
 						</li>
 						<li class="nav-item" >
 							<a class="nav-link" href="register.php">Register</a>
 						</li>
+					</ul>
 		  			<?php
 		  		}
 		      ?>

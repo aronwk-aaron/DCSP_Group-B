@@ -5,15 +5,6 @@
 		<!--DataTabels.js-->
 		<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 		<script type="text/javascript">
-			$(document).ready( function () {
-    			$('#table_id').dataTable({
-    				"order": [],
-					"columnDefs": [ {
-					"targets"  : 'no-sort',
-				    "orderable": false,
-				    }]
-    			});
-			} );
 			document.title = page_title;
 		</script>
 	</body>

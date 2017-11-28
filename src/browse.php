@@ -111,7 +111,7 @@
       if ($conn->connect_error) 
         die($conn->connect_error);
 
-      $query  = "SELECT * FROM nb_Inventory";
+      $query  = "SELECT * FROM nb_inventory";
 
       $result = $conn->query($query);
       if (!$result) 
@@ -119,7 +119,7 @@
 
       $rows = $result->num_rows;
       ?>
-      <table id="table_id" class="display compact" >
+      <table id="browse_table" class="display compact" >
       <thead>
             <tr>
               <th>  Title     </th>
@@ -178,6 +178,17 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready( function () {
+    $('#browse_table').dataTable({
+      "order": [],
+    "columnDefs": [ {
+    "targets"  : 'no-sort',
+      "orderable": false,
+      }]
+    });
+  } );
+</script>
 <?php
 	require_once("templates/footer.php");
   $conn->close();

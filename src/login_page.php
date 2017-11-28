@@ -52,6 +52,7 @@
           $_SESSION['state']		= $row['state'];
           $_SESSION['zip']			= $row['zip'];
           $_SESSION['isAdmin']		= $row['isAdmin'];
+          unset($_SESSION['u_passed']);
           $connection->close();
           if($_SESSION['isAdmin']){
             	$is_admin = true;
@@ -99,11 +100,23 @@
 			<form method="post" action="login_page.php">
 				<p class="card-text" style="color: red">
 		        	<?php echo $err_msg; ?>
-		        </p>
+
+		        <span style="color:blue;font-weight:bold;text-align:center;">
+			      <?php 
+			      if(isset($_SESSION["u_passed"])) {
+			        echo('Account creation successful!');
+			      }
+			      ?>
+			    </span>
 				  <div class="form-group row">
 				    <label for="staticEmail" class="col-sm-2 col-form-label">Username:</label>
 				    <div class="col-sm-10">
-				      <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Username">
+				      <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Username" 
+				      <?php 
+				      	if (isset($_SESSION["u_passed"])){ 
+				      		echo('value='); echo('"' . $_SESSION['u_passed']) . '"';
+				      	}
+				       ?> >
 				    </div>
 				  </div>
 				  <div class="form-group row">

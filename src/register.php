@@ -13,7 +13,7 @@
 	}
 	$err_msg = "";
 
-  $username = $password = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $usernameDupe = $invalidInput = $zipLenErr = "";
+  $username = $password = $passwordCheck = $firstName = $lastName = $address = $city = $state = $zip = $incomplete = $error = $successful = $usernameDupe = $invalidInput = $zipLenErr = $passMatch = "";
   
   $states = [
   "AL" => "Alabama",
@@ -75,6 +75,7 @@
   {
     $username = sanitizeString($_POST['username']);
     $password = $_POST['password'];
+    $passwordCheck = $_POST['passwordCheck'];
     $firstName = sanitizeString($_POST['firstName']);
     $lastName = sanitizeString($_POST['lastName']);
     $address = sanitizeAddress($_POST['address']);
@@ -85,6 +86,13 @@
       {
         $state = $stateAbb[$state];
       }
+
+    if ($password == $passwordCheck) {
+      $passMatch = false;
+    }
+    else{
+      $passMatch = true;
+    }
       
     if($username != $_POST['username'] || $firstName != $_POST['firstName'] || $lastName != $_POST['lastName'] || $address != $_POST['address'] || $city != $_POST['city'] || $zip != $_POST['zip'])
     {
@@ -98,7 +106,7 @@
       $error = "True";
     }
     
-    if($_POST && (!$username || !$password || !$address || !$city || $state =="Choose a State" || !$zip))
+    if($_POST && (!$username || !$password || !$passwordCheck || !$address || !$city || $state =="Choose a State" || !$zip))
     {
       $incomplete = "1";
     }
@@ -131,9 +139,9 @@
       $error = "True";
     }
     
-    if(!$error && !$incomplete)
+    if(!$error && !$incomplete && !$passMatch)
     {
-      $sql = "INSERT INTO nb_UsersTable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
+      $sql = "INSERT INTO nb_userstable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
       VALUES ('" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', '" . $zip . "', 'false', 'false')";
       
       if($conn->query($sql) === TRUE)
@@ -141,7 +149,7 @@
         $successful = "True";
       }
       
-      $sql1 = "SELECT userID FROM nb_UsersTable WHERE userName = '" .$username . "'";
+      $sql1 = "SELECT userID FROM nb_userstable WHERE userName = '" .$username . "'";
       
       $results = $conn->query($sql1);
       while($result = mysqli_fetch_assoc($results)) 
@@ -194,54 +202,63 @@
 		<div class="card-body">
 			<h3 class="card-title"> Register: </h3>
       <span style="color:blue;font-weight:bold;text-align:center;">
-      <?php if($successful) {echo('Account creation successful!');}?>
+      <?php 
+      if($successful) {
+        $_SESSION['u_passed'] = $_POST['username'];
+
+        header("Location: login_page.php" );
+
+      }
+      ?>
       </span>
       <style>
             .error {color: #FF0000;}
       </style>
       <p><span class="error">
         <?php if($incomplete) {echo('All form fields must be completed to register for NetBooks.<br>');}
-        if($invalidInput) {echo('Invalid special characters deleted. Check fields and resubmit.');}?>
+        if($invalidInput) {echo('Invalid special characters deleted. Check fields and resubmit.');}
+        if($passMatch){ echo("Passwords do not match!");} 
+        if($usernameDupe) {echo('This username has already been claimed.');}
+          ?>
       </span></p>
 			<form method="post" action="register.php">
-				<p class="card-text" style="color: red">
-		        	<?php echo $err_msg; ?>
-		        </p>
 					<div class="form-row">
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-4">
 							<label for="inputUsername">Username</label>
-              <span class="error"><?php if($usernameDupe) {echo('This username has already been claimed.');}?>
-              </span>
-							<input type="text" name="username" class="form-control" id="inputUsername" <?php if(!$_POST || ($_POST && !$username)) {echo('placeholder="Username"');}
+							<input type="text" name="username" class="form-control" id="inputUsername" required <?php if(!$_POST || ($_POST && !$username)) {echo('placeholder="Username"');}
               else {echo('value='); echo($username);}?>>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-4">
 							<label for="inputPassword">Password</label>
-							<input type="password" name="password" class="form-control" id="inputPassword" <?php if(!$_POST || ($_POST && !$password)) {echo('placeholder="Password"');}
+							<input type="password" name="password" class="form-control" id="inputPassword" required <?php if(!$_POST || ($_POST && !$password)) {echo('placeholder="Password"');}
               else {echo('value='); echo($password);}?>>
 						</div>
+            <div class="form-group col-md-4">
+              <label for="inputPasswordCheck">Re-enter Password</label>
+              <input type="password" name="passwordCheck" class="form-control" id="inputPassword" required <?php if(!$_POST || ($_POST && !$password)) {echo('placeholder="Re-enter Password"');}?>>
+            </div>
 					</div>
           <div class="form-row">
 						<div class="form-group col-md-6">
 							<label for="inputFirstName">First Name</label>
-							<input type="text" name="firstName" class="form-control" id="inputFirstName" <?php if(!$_POST || ($_POST && !$firstName)) {echo('placeholder="John"');}
+							<input type="text" name="firstName" class="form-control" id="inputFirstName" required <?php if(!$_POST || ($_POST && !$firstName)) {echo('placeholder="John"');}
               else {echo('value='); echo($firstName);}?>>
 						</div>
 						<div class="form-group col-md-6">
 							<label for="inputLastName">Last Name</label>
-							<input type="text" name="lastName" class="form-control" id="inputLastName" <?php if(!$_POST || ($_POST && !$lastName)) {echo('placeholder="Doe"');}
+							<input type="text" name="lastName" class="form-control" id="inputLastName" required <?php if(!$_POST || ($_POST && !$lastName)) {echo('placeholder="Doe"');}
               else {echo('value='); echo($lastName);}?>>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputAddress">Address</label>
-						<input type="text" name="address" class="form-control" id="inputAddress" <?php if(!$_POST || ($_POST && !$address)) {echo('placeholder="1234 Main St"');}
+						<input type="text" name="address" class="form-control" id="inputAddress" required <?php if(!$_POST || ($_POST && !$address)) {echo('placeholder="1234 Main St"');}
               else {echo('value='); echo('"' . $address) . '"';}?>>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label for="inputCity">City</label>
-							<input type="text" name="city" class="form-control" id="inputCity" <?php if(!$_POST || ($_POST && !$city)) {echo('placeholder="Townsville"');}
+							<input type="text" name="city" class="form-control" id="inputCity" required <?php if(!$_POST || ($_POST && !$city)) {echo('placeholder="Townsville"');}
               else {echo('value='); echo($city);}?>>
 						</div>
 						<div class="form-group col-md-4">
@@ -305,7 +322,7 @@
 						<div class="form-group col-md-2">
 							<label for="inputZip">Zip</label>
 							<input type="text" name="zip" class="form-control" id="inputZip" <?php if(!$_POST || ($_POST && !$zip)) {echo('placeholder="12345"');}
-              else {echo('value='); echo($zip);}?>>
+              else {echo('value='); echo($zip);}?> required>
               <span class="error"><?php if($zipLenErr) {echo('Please use a five digit zip code.');}?>
               </span>
 						</div>
@@ -313,7 +330,7 @@
 					<div class="form-group">
 						<div class="form-check">
 							<label class="form-check-label">
-								<input class="form-check-input" type="checkbox" name="confirm" value="True"> Confirm
+								<input class="form-check-input" type="checkbox" name="confirm" value="True" required> Confirm
                 <span class="error">
                   <?php if($_POST && !isset($_POST['confirm'])) {echo("Check the box to confirm your submission and click 'Register'");}?>
                 </span>
