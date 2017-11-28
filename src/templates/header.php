@@ -46,15 +46,12 @@
 		      	if($is_user){
 		      		?>
 	      			<ul class="navbar-nav">
-		                <li class="nav-item dropdown">
-		                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		                      Hello, <?php print($_SESSION['firstname']); ?>
-		                    </a>
-		                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="user_page.php">Your Profile</a>
-								<a class="dropdown-item" href="cart.php">Your Cart</a>
-		                    </div>
-		                </li>
+		                <li class="nav-item" >
+			              <a class="nav-link" href="user_page.php"> <?php print($_SESSION['firstname']); ?>'s Profile</a>
+			            </li>
+			            <li class="nav-item" >
+			              <a class="nav-link" href="cart.php">Cart</a>
+			            </li>
 						<li class="nav-item" >
 							<a class="nav-link" href="logout.php">Logout</a>
 						</li>

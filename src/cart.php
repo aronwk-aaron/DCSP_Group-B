@@ -46,15 +46,19 @@
                     $total = "0";
                     $rows = $result->num_rows;
                     $SESSION_['cart_id'] = '';
-                
-                  echo "<table>
+                ?>
+                      <table id = 'cart_table' class="display compact" >
+                        <thead>
                         <tr>
                           <th>Title</th>
                           <th>ISBN</th>
                           <th>Buy/Rent</th>
                           <th>Price</th>
-                          <th></th>
-                        </tr>";
+                          <th class='no-sort'> </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                    <?php
                         
                   for ($j = 0 ; $j < $rows ; ++$j)
                   {                     
@@ -62,19 +66,40 @@
                     $row = $result->fetch_array(MYSQLI_ASSOC);
                     $isRent = "No";
                     if ($_SESSION['cart_id'] == '') $_SESSION['cart_id'] = $row['cart_id'];
-                    if($row['isRent'] == 1)
+                    if($row['isRent'])
                       $isRent = "Yes";
-                    
+                    ?>
+                      <tr>
+                        <td> <?php echo $row['title'] ?>  </td>
+                        <td> <?php echo $row['ISBN'] ?> </td>
+                        <td>
+                          <?php
+                            if($row['isRent']){
+                              echo'Rent';
+                            }
+                            else{
+                              echo'Buy';
+                            } 
+                          ?>
+                        </td> 
+                        <td>
+                          $<?php
+                            if($row['isRent']){
+                              echo '2';
+                            }
+                            else{
+                              echo $row['price'];
+                            } 
+                          ?>.00
+                        </td>
 
-                    echo '<tr><td>' . $row['title']   . '</td>';
-                    echo '<td>'     . $row['ISBN']    . '</td>';
-                    if($isRent == "Yes"){echo'<td> Rent </td>';}
-                    else{echo'<td> Buy </td>';}
-                    echo '<td>'     . $row['price']   . '</td>';
-                    echo '<td><form action="cart.php" method="post">  
-                        <button type="submit" class="btn btn-danger" name="delete" value= ' . $row['bookID'] . '>Delete</button> 
-                      </form>
-                    </td></tr>';
+                        <td>
+                          <form action="cart.php" method="post">  
+                            <button type="submit" class="btn btn-danger" name="delete" value= " <?php echo $row['bookID']  ?>">Delete</button> 
+                          </form>
+                        </td>
+                      </tr>
+                    <?php
                     if($isRent == "Yes")
                     {
                       $total += 2;
@@ -83,22 +108,27 @@
                     {
                       $total += $row['price'];
                     }
-                                                                                                                      
-                    
                   }
-                  echo("<tr><td><b>Total</b></td><td></td><td><b>" . $total . "</b></td></tr>");
-                  echo'</table>';
-                
+                  ?>
+                      <tfoot>
+                        <tr>
+                          <td> </td>
+                          <td> </td>
+                          <td><b>Total</b></td>
+                          <td><b> $<?php echo $total ?>.00 </b></td>
+                          <td> </td>
+                        </tr>
+                      </tfoot>
+                    </tbody>
+                  </table>
+                  <form action="checkout.php" method="post">  
+                    <button type="submit" class="btn btn-dark" name="checkout" value= "checkout">Checkout</button> 
+                  </form>  
+                <?php
                 }
                 
                 $conn->close();                
-                ?>
-                
-                
-              <form action="checkout.php" method="post">  
-                        <button type="submit" class="btn btn-dark" name="checkout" value= "checkout">Checkout</button> 
-              </form>  
-              
+                ?>              
 				    </p>
 				  </div>
 				</div>
@@ -114,3 +144,14 @@
 	}
 	require_once("templates/footer.php");
 ?>
+<script type="text/javascript">
+        $(document).ready( function () {
+          $('#cart_table').dataTable({
+            "order": [],
+          "columnDefs": [ {
+          "targets"  : 'no-sort',
+            "orderable": false,
+            }]
+          });
+      } );
+</script>

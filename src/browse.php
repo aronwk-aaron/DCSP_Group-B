@@ -157,7 +157,6 @@
             <td>      <?php print($row['isbn']);       ?>      </td>
             <td>      <?php print($row['publisher']);  ?>      </td>
             <td>     $<?php print($row['price']);      ?>.00   </td>
-            <!-- <td>      <?php print($row['quantity']);   ?>      </td> -->
           <?php
           if($is_user){
             ?>
@@ -168,6 +167,7 @@
                 <button type="submit" class="btn btn-warning" name="rent" value="<?php echo($row['bookID']);?>">Rent</button>
               </form>
               </td>
+            </tr>
             <?php
           }
         }
@@ -178,6 +178,10 @@
     </div>
   </div>
 </div>
+<?php
+	require_once("templates/footer.php");
+  $conn->close();
+?>
 <script type="text/javascript">
   $(document).ready( function () {
     $('#browse_table').dataTable({
@@ -189,7 +193,3 @@
     });
   } );
 </script>
-<?php
-	require_once("templates/footer.php");
-  $conn->close();
-?>

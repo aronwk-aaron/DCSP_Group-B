@@ -1,9 +1,6 @@
   <?php
 	require_once("templates/header.php");
-  if(!isset($_SESSION['username']))
-  {
-    header("Location: login_page.php");
-  }
+
 	if(isset($_SESSION['username']))
   {
 		if($is_admin)
@@ -11,7 +8,7 @@
 		  header("Location: admin_page.php" );
 		  exit();
 		}
-		else
+		elseif(isset($_POST['checkout']))
     {
       $incomplete = $invalidInput = $zipLenErr  = $zipLenErr2 = $cardLenErr = $expLenErr = $cvvLenErr = $cardNum = $exp = $cvv = $success = $error = $total = '';
       
@@ -510,11 +507,13 @@
 ?>
     
   <?php
-    }
+  $conn->close();
+    }else 
+      {
+        header("Location: index.php" );
+        exit();
+      }
   }
-
-        
-
 	else 
   {
 		header("Location: index.php" );
@@ -538,5 +537,4 @@
     return preg_replace('/[^0-9]/', '', $var);
   }
 	require_once("templates/footer.php");
-  $conn->close();
 ?>

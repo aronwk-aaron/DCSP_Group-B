@@ -16,7 +16,7 @@
             $userID = $_SESSION['user_id'];
             //$_SESSION['userID'];
 
-            $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate FROM nb_userHistory uH, nb_History H, nb_Inventory I WHERE H.userID = $userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
+            $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, I.title FROM nb_userHistory uH, nb_History H, nb_Inventory I WHERE H.userID = $userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
             $result = $conn->query($query);
             if (!$result)
                 die($conn->error);
@@ -50,10 +50,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="card-title">Purchase History</h3>
-                                    <table id="table_id" class="display compact" >
+                                    <table id="history_table" class="display compact" >
                                         <thead>
                                         <tr>
                                             <th>  Order Number             </th>
+                                            <th>  Title                    </th>
                                             <th>  ISBN                     </th>
                                             <th>  Price                    </th>
                                             <th>  Date Purchased           </th>
@@ -71,6 +72,7 @@
                                         ?>
                                         <tr>
                                             <td>      <?php print($row['orderNum']);   ?>     </td>
+                                            <td>      <?php print($row['title']) ?></td>
                                             <td>      <?php print($row['isbn']);       ?>     </td>
                                             <td>      $<?php print($row['price']);     ?>.00  </td>
                                             <td>      <?php print($row['datePurch']);  ?>     </td>
@@ -83,7 +85,13 @@
                                             }
                                             else{
                                                 ?>
-                                                <td>     <?php print($row['dueDate']); ?>     </td>
+                                                <td>     
+                                                    <?php  
+                                                        if ($row['dueDate'] != '0000-00-00') {
+                                                            print($row['dueDate']); 
+                                                        }
+                                                    ?>     
+                                                </td>
                                                 <?php
                                             }
                                         }
@@ -108,3 +116,14 @@
 	}
 	require_once("templates/footer.php");
 ?>
+<script type="text/javascript">
+        $(document).ready( function () {
+          $('#history_table').dataTable({
+            "order": [],
+          "columnDefs": [ {
+          "targets"  : 'no-sort',
+            "orderable": false,
+            }]
+          });
+      } );
+</script>
