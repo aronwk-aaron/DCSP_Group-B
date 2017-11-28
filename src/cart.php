@@ -7,6 +7,7 @@
 		}
 		else{
 		  	$is_user = true;
+        $total = 0;
 ?>
 			<script type="text/javascript">
 				var page_title = "NetBooks - Cart";
@@ -42,50 +43,62 @@
                 
             	  else if ($result->num_rows)
             	  {
+                    $total = "0";
                     $rows = $result->num_rows;
-                    $SESSION_['cartID'] = '';
+                    $SESSION_['cart_id'] = '';
                 
                   echo "<table>
-                        <th>
-                          <td>Title</td>
-                          <td>ISBN</td>
-                          <td>Price</td>
-                          <td>For Rent?</td>
-                        </th>";
+                        <tr>
+                          <th>Title</th>
+                          <th>ISBN</th>
+                          <th>Buy/Rent</th>
+                          <th>Price</th>
+                          <th></th>
+                        </tr>";
                         
                   for ($j = 0 ; $j < $rows ; ++$j)
-                  {
-                    
+                  {                     
                     $result->data_seek($j);
                     $row = $result->fetch_array(MYSQLI_ASSOC);
                     $isRent = "No";
-                    if ($_SESSION['cart_id'] == '') $_SESSION['cart_id'] = $row['cartID'];
+                    if ($_SESSION['cart_id'] == '') $_SESSION['cart_id'] = $row['cart_id'];
                     if($row['isRent'] == 1)
                       $isRent = "Yes";
                     
 
                     echo '<tr><td>' . $row['title']   . '</td>';
                     echo '<td>'     . $row['ISBN']    . '</td>';
+                    if($isRent == "Yes"){echo'<td> Rent </td>';}
+                    else{echo'<td> Buy </td>';}
                     echo '<td>'     . $row['price']   . '</td>';
-                    echo '<td>'     . $isRent           . '</td>';
                     echo '<td><form action="cart.php" method="post">  
                         <button type="submit" class="btn btn-danger" name="delete" value= ' . $row['bookID'] . '>Delete</button> 
                       </form>
-                    </td></tr>';                                                                                                  
+                    </td></tr>';
+                    if($isRent == "Yes")
+                    {
+                      $total += 2;
+                    }
+                    elseif($isRent == "No")
+                    {
+                      $total += $row['price'];
+                    }
+                                                                                                                      
                     
                   }
-      
+                  echo("<tr><td><b>Total</b></td><td></td><td><b>" . $total . "</b></td></tr>");
                   echo'</table>';
                 
                 }
                 
-                $conn->close();
+                $conn->close();                
+                ?>
                 
                 
-              echo'<form action="checkout.php" method="post">  
+              <form action="checkout.php" method="post">  
                         <button type="submit" class="btn btn-dark" name="checkout" value= "checkout">Checkout</button> 
-                      </form>';  
-              ?>
+              </form>  
+              
 				    </p>
 				  </div>
 				</div>

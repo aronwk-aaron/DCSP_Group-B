@@ -13,7 +13,7 @@
 		}
 		else
     {
-      $incomplete = $invalidInput = $zipLenErr  = $zipLenErr2 = $cardLenErr = $expLenErr = $cvvLenErr = $cardNum = $exp = $cvv = $success = '';
+      $incomplete = $invalidInput = $zipLenErr  = $zipLenErr2 = $cardLenErr = $expLenErr = $cvvLenErr = $cardNum = $exp = $cvv = $success = $error = $total = '';
       
       $states = [
   "AL" => "Alabama",
@@ -69,13 +69,40 @@
   "WY" => "Wyoming",
   ];
   
-  $stateAbb = array_flip($states);
-      
-      $sql = $query  = "SELECT firstName, lastName, address, city, state, zip FROM nb_userstable WHERE userName = '" . $_SESSION['username'] . "'";
+      $stateAbb = array_flip($states);
+  
       require_once 'inc/login.php';
       $conn = new mysqli($hn, $un, $pw, $db);
       if ($conn->connect_error) 
         die($conn->connect_error);
+      
+      $total = 0;
+      $books = array();
+      $returnDates = array();  
+      $sql = "SELECT I.title, I.price, uC.isRent, uC.cartID FROM nb_Carts C, nb_userCarts uC, nb_Inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
+      
+      $cart = $conn->query($sql);
+      if (!$cart) 
+        die($conn->error);
+        
+      $rows = $cart->num_rows;
+      for ($j = 0 ; $j < $rows ; ++$j)
+      {
+        $cart->data_seek($j);
+        $row = $cart->fetch_array(MYSQLI_ASSOC);
+        array_push($books, $row['title']);
+        if($row['isRent'])
+        {
+          $total += 2;
+        }
+        else
+        {
+          $total += $row['price'];
+        }
+      }
+      
+      $query = "SELECT firstName, lastName, address, city, state, zip FROM nb_userstable WHERE userName = '" . $_SESSION['username'] . "'";
+      
                   
       $result = $conn->query($query);
       if (!$result) 
@@ -89,7 +116,7 @@
       $state = $state2 = $userInfo['state'];
       $zip = $zip2 = $userInfo['zip'];
       
-      if($_POST)
+      if($_POST && !isset($_POST['checkout']))
       {
         $firstName = sanitizeString($_POST['firstName']);
         $lastName = sanitizeString($_POST['lastName']);
@@ -162,10 +189,55 @@
         
         if(!$incomplete && !$error)
         {
-        
+          $sql = "INSERT INTO nb_history (userID)
+          VALUES ('" . $_SESSION['user_id'] . "')";
+          $conn->query($sql);
+          
+          $sql2 = "SELECT MAX(orderNum) FROM nb_history
+          WHERE userID = '" . $_SESSION['user_id'] . "'";
+          $result2 = $conn->query($sql2); 
+          while($results2 = mysqli_fetch_assoc($result2)) 
+          { 
+            $orderNum = $results2['MAX(orderNum)'];
+          }
+          echo($orderNum);
+          echo("<br>");
+          
+          
+          $sql3 = "SELECT bookID, isRent from nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
+          $results3 = $conn->query($sql3);
+          $rows = $results3->num_rows;
+          for ($j = 0 ; $j < $rows ; ++$j)
+          {
+            $results3->data_seek($j);
+            $row = $results3->fetch_array(MYSQLI_ASSOC);
+            $datePurch = date("Y-m-d");
+            if($row['isRent'])
+            {
+              $dueDate = date("Y-m-d",mktime(0, 0, 0, date("m"), date("d") + 14, date("Y")));
+              array_push($returnDates, $dueDate);  
+            }
+            
+            else
+            {
+              $dueDate = Null;
+              array_push($returnDates, $dueDate);
+            }
+            $sql4 = "";
+            $sql4 = "INSERT INTO nb_userhistory (orderNum, bookID, datePurch, dueDate)
+            VALUES ('" . $orderNum . "', '" . $row['bookID'] . "', '" . $datePurch . "', '" . $dueDate . "')";
+            $conn->query($sql4);
+            echo($sql4);
+            echo("<br>");                  
+          }
+          $sql5 = "DELETE FROM nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
+          $conn->query($sql5);
+          $_SESSION['books'] = $books;
+          $_SESSION['total'] = $total;
+          $_SESSION['returnDates'] =  $returnDates;
+          header("Location: confirmation.php");  
         }
-        
-      }    
+     }    
   ?>
   
   <script type="text/javascript">
@@ -176,6 +248,7 @@
 	<div class="card">
 		<div class="card-body">
 			<h3 class="card-title"> Checkout: </h3>
+      <p>Please review your billing and shipping information and update if necessary.</p>
       <h4 class="card-title"> Billing Information </h4>
       <style>
             .error {color: #FF0000;}
@@ -385,14 +458,14 @@
 						<div class="form-group col-md-3">
 							<label for="inputCardNumber">Card Number</label>
 							<input type="text" name="cardNum" class="form-control" id="cardNum" <?php if(!$_POST || ($_POST && !$cardNum)) {echo('placeholder="XXXX-XXXX-XXXX-XXXX"');}
-              else {echo('value='); echo($cardNum);}?>>
+              else {echo('value='); echo($cardNum);}?> required>
               <span class="error"><?php if($cardLenErr) {echo('Please enter a 16 digit card number.');}?>
               </span>
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputExpiration">Expiration Date</label>
 							<input type="text" name="exp" class="form-control" id="inputExpiration" <?php if(!$_POST || ($_POST && !$exp)) {echo('placeholder="MMYY"');}
-              else {echo('value='); echo($exp);}?>>
+              else {echo('value='); echo($exp);}?> required>
               <span class="error"><?php if($expLenErr) {echo('Please enter a four digit expiration date MMYY.');}?>
               </span>
 						</div>
@@ -401,7 +474,7 @@
 					  <div class="form-group col-md-1">
 						  <label for="inputCvv">CVV</label>
 						  <input type="text" name="cvv" class="form-control" id="inputCvv" <?php if(!$_POST || ($_POST && !$cvv)) {echo('placeholder="XXX"');}
-              else {echo('value='); echo($cvv);}?>>
+              else {echo('value='); echo($cvv);}?> required>
               <span class="error"><?php if($cvvLenErr) {echo('Please enter a three digit CVV code (found on the back of the card).');}?>
               </span>
 					 </div>
@@ -411,9 +484,9 @@
 					<div class="form-group">
 						<div class="form-check">
 							<label class="form-check-label">
-								<input class="form-check-input" type="checkbox" name="confirm" value="True"> Accept Terms and Conditions
+								<input class="form-check-input" type="checkbox" name="confirm" value="True" required> Accept Terms and Conditions
                 <span class="error">
-                  <?php if($_POST && !isset($_POST['confirm'])) {echo("Check the box to accept the terms and conditions of NetBooks before checking out.");}?>
+                  <?php if($_POST && !isset($_POST['confirm']) &&!isset($_POST['checkout'])) {echo("Check the box to accept the terms and conditions of NetBooks before checking out.");}?>
                 </span>
 							</label>
 						</div>

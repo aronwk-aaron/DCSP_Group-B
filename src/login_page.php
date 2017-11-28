@@ -52,7 +52,7 @@
           $_SESSION['state']		  = $row['state'];
           $_SESSION['zip']			  = $row['zip'];
           $_SESSION['isAdmin']		= $row['isAdmin'];
-          $_SESSION['cart_id']    = '';
+          $_SESSION['cart_id']    = $row['userID'];
           $connection->close();
           if($_SESSION['isAdmin']){
             	$is_admin = true;
