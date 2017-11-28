@@ -101,14 +101,14 @@
         }
       }
       
-      $query = "SELECT firstName, lastName, address, city, state, zip FROM nb_userstable WHERE userName = '" . $_SESSION['username'] . "'";
+      $sql1 = "SELECT firstName, lastName, address, city, state, zip FROM nb_userstable WHERE userName = '" . $_SESSION['username'] . "'";
       
                   
-      $result = $conn->query($query);
-      if (!$result) 
+      $result1 = $conn->query($sql1);
+      if (!$result1) 
         die($conn->error);
       
-      $userInfo = $result->fetch_array(MYSQLI_ASSOC);
+      $userInfo = $result1->fetch_array(MYSQLI_ASSOC);
       $firstName = $firstName2 = $userInfo['firstName'];
       $lastName = $lastName2 = $userInfo['lastName'];
       $address = $address2 = $userInfo['address'];
@@ -192,28 +192,28 @@
         
         if(!$incomplete && !$error)
         {
-          $sql = "INSERT INTO nb_history (userID)
+          $sql2 = "INSERT INTO nb_history (userID)
           VALUES ('" . $_SESSION['user_id'] . "')";
-          $conn->query($sql);
+          $conn->query($sql2);
           
-          $sql2 = "SELECT MAX(orderNum) FROM nb_history
+          $sql3 = "SELECT MAX(orderNum) FROM nb_history
           WHERE userID = '" . $_SESSION['user_id'] . "'";
-          $result2 = $conn->query($sql2); 
-          while($results2 = mysqli_fetch_assoc($result2)) 
+          $result3 = $conn->query($sql3); 
+          while($results3 = mysqli_fetch_assoc($result3)) 
           { 
-            $orderNum = $results2['MAX(orderNum)'];
+            $orderNum = $results3['MAX(orderNum)'];
           }
           echo($orderNum);
           echo("<br>");
           
           
-          $sql3 = "SELECT bookID, isRent from nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
-          $results3 = $conn->query($sql3);
-          $rows = $results3->num_rows;
+          $sql4 = "SELECT bookID, isRent from nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
+          $results4 = $conn->query($sql4);
+          $rows = $results4->num_rows;
           for ($j = 0 ; $j < $rows ; ++$j)
           {
-            $results3->data_seek($j);
-            $row = $results3->fetch_array(MYSQLI_ASSOC);
+            $results4->data_seek($j);
+            $row = $results4->fetch_array(MYSQLI_ASSOC);
             $datePurch = date("Y-m-d");
             if($row['isRent'])
             {
@@ -225,20 +225,25 @@
             {
               $dueDate = Null;
               array_push($returnDates, $dueDate);
+              $sql5 = "UPDATE nb_inventory SET quantity = quantity - 1 WHERE bookID = '" . $row['bookID'] . "'";
+              $conn->query($sql5);
             }
-            $sql4 = "";
-            $sql4 = "INSERT INTO nb_userhistory (orderNum, bookID, datePurch, dueDate)
+            
+            $sql6 = "";
+            $sql6 = "INSERT INTO nb_userhistory (orderNum, bookID, datePurch, dueDate)
             VALUES ('" . $orderNum . "', '" . $row['bookID'] . "', '" . $datePurch . "', '" . $dueDate . "')";
-            $conn->query($sql4);
-            echo($sql4);
+            $conn->query($sql6);
+            echo($sql5);
             echo("<br>");                  
           }
-          $sql5 = "DELETE FROM nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
-          $conn->query($sql5);
+          
+          $sql7 = "DELETE FROM nb_usercarts WHERE cartID = '" . $_SESSION['user_id'] . "'";
+          $conn->query($sql7);
+          
           $_SESSION['books'] = $books;
           $_SESSION['total'] = $total;
           $_SESSION['returnDates'] =  $returnDates;
-          header("Location: confirmation.php");  
+          header("Location: confirmation.php");   
         }
      }    
   ?>
