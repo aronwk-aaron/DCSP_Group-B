@@ -48,10 +48,11 @@
           $_SESSION['firstname'] 	= $row['firstName'];
           $_SESSION['lastname']  	= $row['lastName'];
           $_SESSION['address']		= $row['address'];
-          $_SESSION['city']			= $row['city'];
-          $_SESSION['state']		= $row['state'];
-          $_SESSION['zip']			= $row['zip'];
+          $_SESSION['city']			  = $row['city'];
+          $_SESSION['state']		  = $row['state'];
+          $_SESSION['zip']			  = $row['zip'];
           $_SESSION['isAdmin']		= $row['isAdmin'];
+          $_SESSION['cart_id']    = $row['userID'];
           unset($_SESSION['u_passed']);
           $connection->close();
           if($_SESSION['isAdmin']){
