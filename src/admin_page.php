@@ -10,7 +10,7 @@
                 die($conn->connect_error);
 
             //history query
-            $hquery  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userhistory uH, nb_history H, nb_inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
+            $hquery  = "SELECT I.isbn, I.title, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userhistory uH, nb_history H, nb_inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
             //inventory query
             $hresult = $conn->query($hquery);
             if (!$hresult)
@@ -85,7 +85,7 @@
                                     <td>      <?php print($hrow['datePurch']);  ?>     </td>
 
                                     <?php
-                                    if($hrow['dueDate'] == NULL) {
+                                    if($hrow['dueDate'] == "0000-00-00") {
                                         ?>
                                         <td> No Due Date</td>
                                         <?php
