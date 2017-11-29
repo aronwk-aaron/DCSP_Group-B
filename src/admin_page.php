@@ -10,7 +10,7 @@
                 die($conn->connect_error);
 
             //history query
-            $hquery  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userHistory uH, nb_History H, nb_Inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
+            $hquery  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, uT.username  FROM nb_userhistory uH, nb_history H, nb_inventory I, nb_userstable uT WHERE H.userID = uT.userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
             //inventory query
             $hresult = $conn->query($hquery);
             if (!$hresult)
@@ -62,11 +62,11 @@
                                 <thead>
                                 <tr>
                                     <th>  Order Number             </th>
-                                    <th>  ISBN                     </th>
+                                    <th>  Title                    </th>
                                     <th>  Price                    </th>
                                     <th>  Date Purchased           </th>
                                     <th>  Date Due                 </th>
-                                    <th>  User ID                  </th>
+                                    <th>  Username                 </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -80,7 +80,7 @@
                                 ?>
                                 <tr>
                                     <td>      <?php print($hrow['orderNum']);   ?>     </td>
-                                    <td>      <?php print($hrow['isbn']);       ?>     </td>
+                                    <td>      <?php print($hrow['title']);       ?>     </td>
                                     <td>     $<?php print($hrow['price']);      ?>.00  </td>
                                     <td>      <?php print($hrow['datePurch']);  ?>     </td>
 
@@ -139,7 +139,7 @@
                                    }
                                }
 
-                                $iquery  = "SELECT * FROM nb_Inventory";
+                                $iquery  = "SELECT * FROM nb_inventory";
 
                                 $iresult = $conn->query($iquery);
                                 if (!$iresult)
@@ -151,10 +151,9 @@
                                     <thead>
                                     <tr class="text-center">
                                         <th>  Title     </th>
-                                        <th>  ISBN      </th>
                                         <th>  Price     </th>
                                         <th>  Quantity  </th>
-                                        <th class="no-sort">  Quantity Change</th>
+                                        <th class="no-sort"> Add Amount</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -168,14 +167,13 @@
                                         ?>
                                         <tr class="text-center">
                                         <td>      <?php print($irow['title']);      ?>      </td>
-                                        <td>      <?php print($irow['isbn']);       ?>      </td>
                                         <td>     $<?php print($irow['price']);      ?>.00   </td>
                                         <td>      <?php print($irow['quantity']);   ?>      </td>
                                         <td>
                                             <form action="admin_page.php#stock" method="post">
                                             	<span class="input-group-btn">
                                                 <input name="quantity" class="form-control input-number" value="1" min="1" max="10" type="text">
-                                                <button type="submit" class="btn btn-success" name="confirm" value="<?php echo($irow['bookID']);?>">Submit</button>
+                                                <button type="submit" class="btn btn-success" name="confirm" value="<?php echo($irow['bookID']);?>">Add</button>
                                               </span>
                                             </form>
                                         </td>
@@ -231,7 +229,7 @@
                                           <td>      <?php print($urow['userName']);   ?>     </td>
                                           <td>      <?php print($urow['userID']);     ?>     </td>
                                           <td>      <form action="admin_page.php#users" method="post">
-                                                  <button type="submit" class="btn btn-success" name="delete" value="<?php echo($urow['userID']);?>">Delete</button>
+                                                  <button type="submit" class="btn btn-danger" name="delete" value="<?php echo($urow['userID']);?>">Delete</button>
                                                     </form>
                                           </td>
                                       </tr>

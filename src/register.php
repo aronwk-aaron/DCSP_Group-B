@@ -123,10 +123,10 @@
     if ($conn->connect_error) 
       die($conn->connect_error);
       
-    $results = $conn->query("SELECT username FROM nb_userstable");
+    $results = $conn->query("SELECT userName FROM nb_userstable");
     while($result = mysqli_fetch_assoc($results)) 
     { 
-      if($username == $result['username'])
+      if($username == $result['userName'])
       {
         $error = "True";
         $usernameDupe = "True";
@@ -141,8 +141,8 @@
     
     if(!$error && !$incomplete && !$passMatch)
     {
-      $sql = "INSERT INTO nb_userstable(userName, firstName, lastName, password, address, city, state, zip, isAdmin, loggedIn)
-      VALUES ('" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', '" . $zip . "', 'false', 'false')";
+      $sql = "INSERT INTO nb_userstable(userName, firstName, lastName, password, address, city, state, zip, isAdmin)
+      VALUES ('" . $username . "', '" . $firstName . "', '" . $lastName . "', '" . $token . "', '" . $address . "', '" . $city . "', '" . $state . "', '" . $zip . "', '0')";
       
       if($conn->query($sql) === TRUE)
       {

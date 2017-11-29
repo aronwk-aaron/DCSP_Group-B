@@ -1,5 +1,6 @@
   <?php
 	require_once("templates/header.php");
+echo($_POST['checkout']);
 
 	if(isset($_SESSION['username']))
   {
@@ -8,7 +9,7 @@
 		  header("Location: admin_page.php" );
 		  exit();
 		}
-		elseif(isset($_POST['checkout']))
+		if(isset($_POST['checkout']))
     {
       $incomplete = $invalidInput = $zipLenErr  = $zipLenErr2 = $cardLenErr = $expLenErr = $cvvLenErr = $cardNum = $exp = $cvv = $success = $error = $total = '';
       
@@ -76,7 +77,7 @@
       $total = 0;
       $books = array();
       $returnDates = array();  
-      $sql = "SELECT I.title, I.price, uC.isRent, uC.cartID FROM nb_Carts C, nb_userCarts uC, nb_Inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
+      $sql = "SELECT I.title, I.price, uC.isRent, uC.cartID FROM nb_carts C, nb_usercarts uC, nb_inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
       
       $cart = $conn->query($sql);
       if (!$cart) 
@@ -113,7 +114,7 @@
       $state = $state2 = $userInfo['state'];
       $zip = $zip2 = $userInfo['zip'];
       
-      if($_POST && !isset($_POST['checkout']))
+      if($_POST && isset($_POST['confirm']))
       {
         $firstName = sanitizeString($_POST['firstName']);
         $lastName = sanitizeString($_POST['lastName']);
@@ -220,7 +221,7 @@
             
             else
             {
-              $dueDate = Null;
+              $dueDate = "0000-00-00";
               array_push($returnDates, $dueDate);
               $sql5 = "UPDATE nb_inventory SET quantity = quantity - 1 WHERE bookID = '" . $row['bookID'] . "'";
               $conn->query($sql5);
@@ -496,6 +497,7 @@
 							</label>
 						</div>
 					</div>
+				<input type=hidden name="checkout" value="checkout">
 				<button type="submit" class="btn btn-dark">Checkout</button>
 				</form>
 		</div>

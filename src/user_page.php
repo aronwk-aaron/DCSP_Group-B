@@ -16,7 +16,7 @@
             $userID = $_SESSION['user_id'];
             //$_SESSION['userID'];
 
-            $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, I.title FROM nb_userHistory uH, nb_History H, nb_Inventory I WHERE H.userID = $userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
+            $query  = "SELECT I.isbn, I.price, H.orderNum, uH.datePurch, uH.dueDate, I.title FROM nb_userhistory uH, nb_history H, nb_inventory I WHERE H.userID = $userID AND uH.orderNum = H.orderNum AND uH.bookID = I.bookID";
             $result = $conn->query($query);
             if (!$result)
                 die($conn->error);
@@ -78,7 +78,7 @@
                                             <td>      <?php print($row['datePurch']);  ?>     </td>
 
                                             <?php
-                                            if($row['dueDate'] == NULL) {
+                                            if($row['dueDate'] == "0000-00-00") {
                                                 ?>
                                                 <td> No Due Date</td>
                                                 <?php

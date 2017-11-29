@@ -29,12 +29,12 @@
                 if($_POST){ 
                   if(isset($_POST['delete'])){
                   $bookID = $_POST['delete'];
-                    $query = "DELETE FROM nb_userCarts WHERE cartID = '" . $_SESSION['cart_id'] . "' AND bookID = '" . $bookID . "'";
+                    $query = "DELETE FROM nb_usercarts WHERE cartID = '" . $_SESSION['cart_id'] . "' AND bookID = '" . $bookID . "'";
                     $conn->query($query);
                   }
                 }
                 
-                $query  = "SELECT I.title, I.ISBN, I.price, uC.isRent, I.bookID, uC.cartID FROM nb_Carts C, nb_userCarts uC, nb_Inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
+                $query  = "SELECT I.title, I.ISBN, I.price, uC.isRent, I.bookID, uC.cartID FROM nb_carts C, nb_usercarts uC, nb_inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
                 $result = $conn->query($query);
 
 	              if ($result->num_rows < 1){

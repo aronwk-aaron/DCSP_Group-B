@@ -64,7 +64,7 @@ FOREIGN KEY (userID) REFERENCES nb_userstable(userID) ON DELETE CASCADE
 );
 
 
-CREATE TABLE nb_userCarts(
+CREATE TABLE nb_usercarts(
 cartID INT NOT NULL,
 bookID INT NOT NULL,
 isRent BOOL,
@@ -82,7 +82,7 @@ FOREIGN KEY (userID) REFERENCES nb_userstable(userID) ON DELETE CASCADE
 );
 
 
-CREATE TABLE nb_userHistory(
+CREATE TABLE nb_userhistory(
 orderNum INT NOT NULL,
 bookID INT NOT NULL,
 datePurch DATE,

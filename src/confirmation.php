@@ -44,8 +44,21 @@
       {        
       ?>
           <tr>
-            <td>      <?php print($books[$j]);     ?>      </td>
-            <td>      <?php print($returnDates[$j]);    ?>      </td>
+            <td>      <?php print($books[$j]); ?>        </td>
+            <?php
+            if($returnDates[$j] == "0000-00-00")
+            {
+            ?>
+              <td>    No Due Date                        </td>
+            <?php
+            }
+            else
+            {  
+            ?> 
+              <td>    <?php print($returnDates[$j]); ?>  </td>
+            <?php
+             }
+            ?>
           </tr>
       <?php
       }
