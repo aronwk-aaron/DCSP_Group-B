@@ -27,6 +27,7 @@
 
 	</head>
 	<body class="bg-dark">
+		<noscript style="color: red;" >Turn JavaScript back on, please!</noscript>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="index.php">NetBooks</a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +47,15 @@
 		      	if($is_user){
 		      		?>
 	      			<ul class="navbar-nav">
-		                <li class="nav-item" >
-			              <a class="nav-link" href="user_page.php"> <?php print($_SESSION['firstname']); ?>'s Profile</a>
-			            </li>
+                    <li class="nav-item dropdown">
+		                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                      Hello, <?php print($_SESSION['firstname']); ?>
+		                    </a>
+		                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="user_page.php">User Page</a>
+								<a class="dropdown-item" href="profile_change.php">Update Account</a>
+		                    </div>
+		                </li>
 			            <li class="nav-item" >
 			              <a class="nav-link" href="cart.php">Cart</a>
 			            </li>
@@ -62,7 +69,7 @@
 		  			?>
 		  			<ul class="navbar-nav">
 		                <li class="nav-item dropdown">
-		                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		                      Hello, <?php print($_SESSION['firstname']); ?>
 		                    </a>
 		                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

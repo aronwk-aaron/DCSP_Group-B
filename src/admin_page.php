@@ -194,9 +194,10 @@
                             <table id="user_table" class="display compact" >
                                 <thead>
                                 <tr>
-                                    <th>  User Name                </th>
-                                    <th>  User ID                  </th>
-                                    <th>  Delete User?             </th>
+                                    <th>  User Name                     </th>
+                                    <th>  User ID                       </th>
+                                    <th>  Delete User?                  </th>
+                                    <th>  Reset Password(password1234)? </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -208,6 +209,15 @@
                                         $dquery = "DELETE FROM nb_userstable WHERE userID = '$delete_user'";
                                         if (!$conn->query($dquery)) {
                                             echo "Error deleting record.";
+                                        }
+                                    }
+                                    if($_POST['reset']) {
+                                        $reset_user = $_POST['reset'];
+                                        $rquery = "UPDATE nb_userstable 
+                                        SET password = '75c01e24643274888bcb47c938a679a2' WHERE userID = '$reset_user'";
+
+                                        if (!$conn->query($rquery)) {
+                                            echo "Error reseting password.";
                                         }
                                     }
                                 }
@@ -230,7 +240,10 @@
                                           <td>      <?php print($urow['userID']);     ?>     </td>
                                           <td>      <form action="admin_page.php#users" method="post">
                                                   <button type="submit" class="btn btn-danger" name="delete" value="<?php echo($urow['userID']);?>">Delete</button>
-                                                    </form>
+                                          </td>
+                                          <td>
+                                                  <button type="submit" class="btn btn-secondary" name="reset" value="<?php echo($urow['userID']);?>">Reset</button>
+                                                  </form>
                                           </td>
                                       </tr>
                                 <?php }

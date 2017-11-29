@@ -190,6 +190,7 @@ echo($_POST['checkout']);
         
         if(!$incomplete && !$error)
         {
+echo("test");
           $sql2 = "INSERT INTO nb_history (userID)
           VALUES ('" . $_SESSION['user_id'] . "')";
           $conn->query($sql2);

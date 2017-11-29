@@ -28,10 +28,22 @@
                 
                 if($_POST){ 
                   if(isset($_POST['delete'])){
-                  $bookID = $_POST['delete'];
+                    $bookID = $_POST['delete'];
                     $query = "DELETE FROM nb_usercarts WHERE cartID = '" . $_SESSION['cart_id'] . "' AND bookID = '" . $bookID . "'";
-                    $conn->query($query);
+
                   }
+                  elseif(isset($_POST['rent'])){
+                    $bookID = $_POST['rent'];
+                    $query = "UPDATE nb_usercarts
+            SET isRent = '1' WHERE bookID = '" . $_POST['rent'] . "' && cartID = '" . $_SESSION['cart_id'] . "'";
+                  }
+                  elseif(isset($_POST['buy'])){
+                    $bookID = $_POST['buy'];
+                    $query = "UPDATE nb_usercarts
+            SET isRent = '0' WHERE bookID = '" . $_POST['buy'] . "' && cartID = '" . $_SESSION['cart_id'] . "'";
+                  }
+                  
+                  $conn->query($query);
                 }
                 
                 $query  = "SELECT I.title, I.ISBN, I.price, uC.isRent, I.bookID, uC.cartID FROM nb_carts C, nb_usercarts uC, nb_inventory I WHERE C.userID =" . $_SESSION['user_id'] . " AND uC.cartID = C.cartID AND uC.bookID = I.bookID ;";
@@ -95,7 +107,21 @@
 
                         <td>
                           <form action="cart.php" method="post">  
-                            <button type="submit" class="btn btn-danger" name="delete" value= " <?php echo $row['bookID']  ?>">Delete</button> 
+                            <button type="submit" class="btn btn-danger" name="delete" value= " <?php echo $row['bookID']  ?>">Delete</button>
+                            <?php
+                              if($row['isRent'])
+                              {
+                            ?>
+                            <button type="submit" class="btn btn-success" name="buy" value= " <?php echo $row['bookID']  ?>">Buy</button>
+                            <?php
+                              }
+                              else
+                              {
+                            ?>
+                            <button type="submit" class="btn btn-warning" name="rent" value= " <?php echo $row['bookID']  ?>">Rent</button>
+                            <?php
+                              }
+                            ?> 
                           </form>
                         </td>
                       </tr>

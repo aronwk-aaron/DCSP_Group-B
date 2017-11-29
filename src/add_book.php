@@ -27,7 +27,7 @@ if($_POST)
         $error = "True";
     }
 
-    if((strlen($isbn) == 13) or (strlen($isbn) == 10))
+    if(strlen($isbn) != 13)
     {
         $isbnLenErr = "True";
         $error = "True";
@@ -91,7 +91,7 @@ if($_POST)
 
 function sanitizeString($var)
 {
-    return preg_replace('/[^A-Za-z0-9\-]/', '', $var);
+    return preg_replace('/[^A-Za-z0-9\040]/', '', $var);
 }
 
 function sanitizeNum($var)
@@ -142,7 +142,7 @@ function sanitizeNum($var)
                         <div class="form-group col-md-6">
                             <label for="inputAuthor">Author</label>
                             <input type="text" name="author" class="form-control" id="inputAuthor" <?php if(!$_POST || ($_POST && !$author)) {echo('placeholder="Author"');}
-                            else {echo('value='); echo($author);}?>>
+                            else {echo('value='); echo("'" . $author . "'");}?>>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPublisher">Publisher</label>

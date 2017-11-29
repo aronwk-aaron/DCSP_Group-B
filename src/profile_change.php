@@ -124,7 +124,6 @@
       $sql = "UPDATE nb_userstable
       SET firstname = '" . $firstName . "', lastname = '" . $lastName . "', password = '" . $token . "', address = '" . $address . "', city = '" . $city . "', state = '" . $state . "', zip = '" . $zip . "' WHERE userID = '" . $_SESSION['user_id'] . "'";
       
-      echo($sql);
       if($conn->query($sql) === TRUE)
       {
         $successful = "True";
@@ -183,7 +182,7 @@
             .error {color: #FF0000;}
       </style>
       <p><span class="error">
-        <?php if($incomplete) {echo('All form fields must be completed to register for NetBooks.<br>');}
+        <?php if($incomplete) {echo('All form fields must be completed to update your account.<br>');}
         if($invalidInput) {echo('Invalid special characters deleted. Check fields and resubmit.');}?>
       </span></p>
 			<form method="post" action="profile_change.php">
